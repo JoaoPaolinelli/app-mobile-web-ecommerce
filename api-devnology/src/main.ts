@@ -6,6 +6,13 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+ 
+  app.enableCors();
+  // app.enableCors({
+  //   origin: ['*'],
+  //   // origin: ['http://localhost:8080', 'http://localhost:5000'], // ou '*' para tudo
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  // });
 
   const config = new DocumentBuilder()
     .setTitle('Devnology E-Commerce API')

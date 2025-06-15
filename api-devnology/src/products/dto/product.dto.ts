@@ -2,6 +2,10 @@
 export class ProductDto {
   id: string;
   name: string;
+  description: string;
+  category: string;
+  imageUrl: string;
   price: number;
-  // adicione aqui outros campos que você queira expor
+  hasDiscount: boolean;
+  discountValue: number;
 }
