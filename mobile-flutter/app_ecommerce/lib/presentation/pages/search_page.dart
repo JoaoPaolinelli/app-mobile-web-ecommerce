@@ -1,6 +1,3 @@
-// lib/presentation/pages/search_page.dart
-import 'package:app_ecommerce/models/product_model.dart';
-import 'package:app_ecommerce/presentation/delegate/product_search_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,79 +6,89 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../../presentation/widgets/app_nav_bar.dart';
 import '../../presentation/widgets/product_card.dart';
+import '../../presentation/widgets/section_header.dart';
 import '../controllers/search_controller.dart';
-import '../controllers/home_controller.dart'; // só para navIndex
+import '../controllers/home_controller.dart';
 
 class SearchPage extends StatelessWidget {
-  // Controller de busca
   final SearchControllers sc = Get.put(SearchControllers());
-  // Controller apenas para o BottomNav
   final HomeController hc = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Column(
-        children: [
-          const SizedBox(height: AppSizes.padding),
+      body: SafeArea(
+        child: Obx(() {
+          if (sc.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-          // 🔎 Search Bar clicável
-          GestureDetector(
-            onTap: () => _openDelegate(context),
-            child: Container(
-              height: 48,
-              margin: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-                border: Border.all(color: Colors.black26),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                children: const [
-                  Icon(Icons.search, size: AppSizes.iconSize),
-                  SizedBox(width: 8),
-                  Text('Buscar produtos'),
-                  // style: AppTextStyles.sectionTitle),
-                ],
-              ),
-            ),
-          ),
+          final all = sc.allProducts;
 
-          const SizedBox(height: 24),
+          return ListView(
+            padding: const EdgeInsets.only(bottom: 24),
+            children: [
+              const SizedBox(height: AppSizes.padding),
 
-          // 🔄 Observa os resultados reativos
-          Expanded(
-            child: Obx(() {
-              final results = sc.results;
-              // if (sc.isLoading.value) {
-              //   return const Center(child: CircularProgressIndicator());
-              // }
-              if (results.isEmpty) {
-                return Center(
-                  child: Text(
-                    'Digite algo para buscar',
-                    style: AppTextStyles.productSub,
-                  ),
-                );
-              }
-              return GridView.builder(
+              Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSizes.padding,
                 ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 0.65,
+                child: TextField(
+                  onChanged: sc.search,
+                  decoration: InputDecoration(
+                    hintText: 'Buscar produtos',
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    fillColor: AppColors.surface,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppSizes.borderRadius,
+                      ),
+                      borderSide: const BorderSide(color: Colors.black26),
+                    ),
+                  ),
                 ),
-                itemCount: results.length,
-                itemBuilder: (ctx, i) => ProductCard(product: results[i]),
-              );
-            }),
-          ),
-        ],
+              ),
+
+              const SizedBox(height: 16),
+
+              // Seções horizontais
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.padding,
+                ),
+                child: SectionHeader(
+                  title: 'Dia dos namorados no E-Buy',
+                  onTap: () {},
+                ),
+              ),
+              _buildHorizontalList(all),
+
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.padding,
+                ),
+                child: SectionHeader(
+                  title: 'Produtos com Desconto',
+                  onTap: () {},
+                ),
+              ),
+              _buildHorizontalList(all.where((p) => p.hasDiscount).toList()),
+
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.padding,
+                ),
+                child: SectionHeader(title: 'Saúde e Fit', onTap: () {}),
+              ),
+              _buildHorizontalList(all),
+            ],
+          );
+        }),
       ),
       bottomNavigationBar: Obx(
         () => AppBottomNav(
@@ -92,14 +99,17 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  void _openDelegate(BuildContext context) async {
-    final selected = await showSearch(
-      context: context,
-      delegate: ProductSearchDelegate(),
+  /// 🔄 Lista horizontal com ProductCard
+  Widget _buildHorizontalList(List products) {
+    return SizedBox(
+      height: 220,
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
+        scrollDirection: Axis.horizontal,
+        itemCount: products.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 16),
+        itemBuilder: (ctx, i) => ProductCard(product: products[i]),
+      ),
     );
-    if (selected is ProductModel) {
-      // Se quiser navegar ao detalhe:
-      // Get.toNamed(AppRoutes.productDetails, arguments: selected.id);
-    }
   }
 }

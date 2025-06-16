@@ -37,6 +37,12 @@ dependencies:
   google_fonts: ^6.2.1
   get: ^4.7.2
   http: ^1.4.0
+  intl_phone_field: ^3.2.0
+  flutter_multi_formatter: ^2.12.3
+  mask_text_input_formatter: ^2.7.0
+
+
+
 
 dev_dependencies:
   flutter_test:

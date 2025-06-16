@@ -50,7 +50,7 @@ class AppBottomNav extends StatelessWidget {
               onTap: () {
                 if (currentIndex != i) {
                   onTap(i);
-                  Get.offNamed(route);
+                  Get.toNamed(route);
                 }
               },
               child: ColorFiltered(

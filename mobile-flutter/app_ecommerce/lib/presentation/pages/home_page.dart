@@ -1,3 +1,4 @@
+import 'package:app_ecommerce/presentation/controllers/cart_controller.dart';
 import 'package:app_ecommerce/presentation/widgets/app_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,7 @@ import '../widgets/product_card.dart';
 
 class HomePage extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
-
+  final cartController = Get.find<CartController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

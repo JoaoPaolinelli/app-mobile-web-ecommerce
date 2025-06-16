@@ -1,4 +1,3 @@
-// lib/presentation/controllers/search_controller.dart
 import 'package:app_ecommerce/data/api_service.dart';
 import 'package:get/get.dart';
 import '../../models/product_model.dart';
@@ -6,36 +5,48 @@ import '../../models/product_model.dart';
 class SearchControllers extends GetxController {
   final ApiService _api = ApiService();
 
-  /// Todos os produtos carregados do servidor
+  /// Todos os produtos carregados da API
   final allProducts = <ProductModel>[].obs;
 
-  /// Resultados filtrados em memória (obs apenas se precisar reagir a mudanças)
+  /// Resultados filtrados dinamicamente
   final results = <ProductModel>[].obs;
 
-  get isLoading => null;
+  /// Controle de carregamento
+  final _isLoading = false.obs;
+  bool get isLoading => _isLoading.value;
+  set isLoading(bool value) => _isLoading.value = value;
 
   @override
   void onInit() {
     super.onInit();
-    // Carrega tudo apenas uma vez
-    _api.fetchAllProducts().then(allProducts.assignAll);
+    carregarProdutos(); // Carrega ao abrir
   }
 
-  /// Preenche `results` usando filtro local
-  void setQuery(String query) {
-    final q = query.trim().toLowerCase();
-    if (q.isEmpty) {
-      results.clear();
-    } else {
-      results.assignAll(filterLocal(q));
+  /// Carrega os produtos da API e armazena
+  Future<void> carregarProdutos() async {
+    isLoading = true;
+    try {
+      final produtos = await _api.fetchAllProducts();
+      allProducts.assignAll(produtos);
+      results.assignAll(produtos); // exibe tudo inicialmente (ou deixe vazio)
+    } catch (e) {
+      // Pode logar erro ou mostrar snackbar
+      print('Erro ao carregar produtos: $e');
+    } finally {
+      isLoading = false;
     }
   }
 
-  /// Retorna todos os produtos cujo nome contenha a query
-  List<ProductModel> filterLocal(String query) {
-    final lower = query.toLowerCase();
-    return allProducts
-        .where((p) => p.name.toLowerCase().contains(lower))
-        .toList();
+  /// Filtra localmente os produtos
+  void search(String query) {
+    if (query.isEmpty) {
+      results.clear(); // ou use allProducts para mostrar tudo
+      return;
+    }
+
+    results.value =
+        allProducts
+            .where((p) => p.name.toLowerCase().contains(query.toLowerCase()))
+            .toList();
   }
 }

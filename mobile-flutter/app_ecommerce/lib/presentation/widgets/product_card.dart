@@ -1,4 +1,8 @@
+import 'package:app_ecommerce/core/utils/random_images_service.dart';
+import 'package:app_ecommerce/presentation/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../../core/constants/app_colors.dart';
@@ -11,6 +15,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartController = Get.find<CartController>();
     // Usa a URL do model se existir, senão sorteia uma asset
     final imageWidget =
         (product.imageUrl.isNotEmpty)
@@ -97,7 +102,20 @@ class ProductCard extends StatelessWidget {
                         ),
                       ),
                       InkWell(
-                        onTap: () {}, // adicionar ao carrinho
+                        onTap: () {
+                          print("Joao");
+
+                          cartController.addToCart(
+                            CartItem(
+                              imageUrl: RandomImageService.getImageFor(
+                                product.name,
+                              ),
+                              title: product.name,
+                              description: product.description ?? '',
+                              price: product.price.toDouble(),
+                            ),
+                          );
+                        }, // adicionar ao carrinho
                         borderRadius: BorderRadius.circular(
                           AppSizes.buttonRadius,
                         ),
