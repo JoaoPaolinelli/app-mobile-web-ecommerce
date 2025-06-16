@@ -90,12 +90,7 @@ class SearchPage extends StatelessWidget {
           );
         }),
       ),
-      bottomNavigationBar: Obx(
-        () => AppBottomNav(
-          currentIndex: hc.navIndex.value,
-          onTap: (i) => hc.navIndex.value = i,
-        ),
-      ),
+      bottomNavigationBar: AppBottomNav(),
     );
   }
 

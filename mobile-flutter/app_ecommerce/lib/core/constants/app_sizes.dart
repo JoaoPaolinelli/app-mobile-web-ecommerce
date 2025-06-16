@@ -32,5 +32,5 @@ class AppSizes {
   static const double xl = 32.0;
 
   /// Altura padrão de botões e campos de texto
-  static const double defaultControlHeight = 48.0;
+  static const double defaultControlHeight = 56.0;
 }

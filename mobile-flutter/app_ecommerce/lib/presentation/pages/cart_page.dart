@@ -12,15 +12,8 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../../core/constants/app_sizes.dart';
 
-class CartPage extends StatefulWidget {
-  const CartPage({super.key});
-
-  @override
-  State<CartPage> createState() => _CartPageState();
-}
-
-class _CartPageState extends State<CartPage> {
-  final cartController = Get.find<CartController>();
+class CartPage extends StatelessWidget {
+  final CartController cart = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,37 +22,35 @@ class _CartPageState extends State<CartPage> {
       body: SafeArea(
         child: Column(
           children: [
-            CartAppBar(
-              onBack: () => Get.back(),
-              onClear: cartController.clearCart,
-            ),
-            const SizedBox(height: 8),
+            CartAppBar(onBack: Get.back, onClear: cart.clearCart),
+            const SizedBox(height: AppSizes.sm),
             const DeliveryInfoCard(),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              margin: EdgeInsets.symmetric(horizontal: 34),
+            const SizedBox(height: AppSizes.lg),
+
+            // Cupom
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Cupom', style: AppTextStyles.cartCouponTitle),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: AppSizes.xs),
                   const Text(
                     'Você precisa entrar ou criar uma conta para adicionar um cupom',
                     style: AppTextStyles.cartCouponSubtitle,
-                    maxLines: 2,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSizes.lg),
                   SizedBox(
-                    width: 400,
-                    height: 58,
+                    width: double.infinity,
+                    height: AppSizes.defaultControlHeight,
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.purchaseButton,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(
+                            AppSizes.borderRadius,
+                          ),
                         ),
                       ),
                       child: const Text(
@@ -71,9 +62,10 @@ class _CartPageState extends State<CartPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+
+            const SizedBox(height: AppSizes.lg),
             const Padding(
-              padding: EdgeInsets.only(left: 50),
+              padding: EdgeInsets.only(left: AppSizes.lg),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -82,20 +74,21 @@ class _CartPageState extends State<CartPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSizes.xs),
+
+            // Lista de itens (só essa parte é reativa)
             Expanded(
               child: Obx(
                 () => ListView.builder(
-                  itemCount: cartController.cartItems.length,
+                  itemCount: cart.cartItems.length,
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 43,
+                    horizontal: AppSizes.lg,
                     vertical: AppSizes.xs,
                   ),
-                  itemBuilder: (context, index) {
-                    final item = cartController.cartItems[index];
+                  itemBuilder: (ctx, i) {
+                    final item = cart.cartItems[i];
                     return Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: AppSizes.sm,
                         vertical: AppSizes.xs,
                       ),
                       child: ProductCartCard(
@@ -104,8 +97,8 @@ class _CartPageState extends State<CartPage> {
                         description: item.description,
                         price: item.price,
                         quantity: item.quantity,
-                        onAdd: () => cartController.increaseQuantity(index),
-                        onRemove: () => cartController.decreaseQuantity(index),
+                        onAdd: () => cart.increaseQuantity(i),
+                        onRemove: () => cart.decreaseQuantity(i),
                       ),
                     );
                   },
@@ -113,9 +106,10 @@ class _CartPageState extends State<CartPage> {
               ),
             ),
 
+            // Seção de checkout (título + botão)
             Obx(
               () => CheckoutSection(
-                total: cartController.total,
+                total: cart.total,
                 onCheckout: () => Get.toNamed(AppRoutes.phoneNumber),
               ),
             ),

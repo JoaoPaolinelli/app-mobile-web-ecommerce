@@ -17,12 +17,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      bottomNavigationBar: Obx(
-        () => AppBottomNav(
-          currentIndex: hc.navIndex.value,
-          onTap: (i) => hc.navIndex.value = i,
-        ),
-      ),
+      bottomNavigationBar: AppBottomNav(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

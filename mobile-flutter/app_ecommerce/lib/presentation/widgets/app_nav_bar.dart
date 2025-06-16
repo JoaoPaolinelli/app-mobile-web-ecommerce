@@ -14,7 +14,7 @@ class AppBottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final nav = Get.find<NavigationController>();
     final cartController = Get.find<CartController>();
-
+    // Mesma lista de ícones
     final items = [
       'home.png',
       'category.png',
@@ -35,6 +35,15 @@ class AppBottomNav extends StatelessWidget {
           boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
         ),
         child: Obx(() {
+          // Sempre recalcula o índice a partir da rota
+          final current = Get.currentRoute;
+          final idxFromRoute = nav.pages.indexWhere(
+            (r) => current.startsWith(r),
+          );
+          if (idxFromRoute != -1 && idxFromRoute != nav.currentIndex.value) {
+            nav.currentIndex.value = idxFromRoute;
+          }
+
           final cartCount = cartController.cartItems.fold<int>(
             0,
             (sum, item) => sum + item.quantity,

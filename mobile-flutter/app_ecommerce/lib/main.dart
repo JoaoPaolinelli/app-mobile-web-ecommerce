@@ -1,3 +1,4 @@
+import 'package:app_ecommerce/core/utils/navigator_observer.dart';
 import 'package:app_ecommerce/presentation/controllers/cart_controller.dart';
 import 'package:app_ecommerce/presentation/controllers/home_controller.dart';
 import 'package:app_ecommerce/presentation/controllers/navigation_controller.dart';
@@ -27,7 +28,9 @@ class MyApp extends StatelessWidget {
       title: 'E-Buy',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
+      navigatorObservers: [RouteObserverX()],
       initialRoute: AppRoutes.home,
+
       getPages: AppRoutes.pages,
     );
   }

@@ -69,15 +69,10 @@ class HomePage extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: Obx(() {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: AppSizes.sm),
-          child: AppBottomNav(
-            currentIndex: controller.navIndex.value,
-            onTap: (i) => controller.navIndex.value = i,
-          ),
-        );
-      }),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: AppSizes.sm),
+        child: AppBottomNav(),
+      ),
     );
   }
 }

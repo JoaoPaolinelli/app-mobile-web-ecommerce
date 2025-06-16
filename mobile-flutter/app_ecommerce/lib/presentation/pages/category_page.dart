@@ -151,12 +151,7 @@ class CategoryPage extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: Obx(
-        () => AppBottomNav(
-          currentIndex: h.navIndex.value,
-          onTap: (i) => h.navIndex.value = i,
-        ),
-      ),
+      bottomNavigationBar: AppBottomNav(),
     );
   }
 }
