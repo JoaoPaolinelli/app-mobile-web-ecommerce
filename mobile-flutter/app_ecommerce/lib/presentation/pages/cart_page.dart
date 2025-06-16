@@ -56,7 +56,7 @@ class _CartPageState extends State<CartPage> {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFD9D9D9).withOpacity(0.7),
+                        backgroundColor: AppColors.purchaseButton,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -64,7 +64,7 @@ class _CartPageState extends State<CartPage> {
                       ),
                       child: const Text(
                         "Entrar ou fazer cadastro",
-                        style: AppTextStyles.cartLoginButton,
+                        style: AppTextStyles.cartContinueButton,
                       ),
                     ),
                   ),
@@ -87,12 +87,17 @@ class _CartPageState extends State<CartPage> {
               child: Obx(
                 () => ListView.builder(
                   itemCount: cartController.cartItems.length,
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 43,
+                    vertical: AppSizes.xs,
+                  ),
                   itemBuilder: (context, index) {
                     final item = cartController.cartItems[index];
-                    return Container(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      margin: EdgeInsets.symmetric(horizontal: 32),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSizes.sm,
+                        vertical: AppSizes.xs,
+                      ),
                       child: ProductCartCard(
                         imageUrl: item.imageUrl,
                         title: item.title,
@@ -107,6 +112,7 @@ class _CartPageState extends State<CartPage> {
                 ),
               ),
             ),
+
             Obx(
               () => CheckoutSection(
                 total: cartController.total,

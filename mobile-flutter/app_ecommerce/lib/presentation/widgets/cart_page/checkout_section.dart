@@ -40,10 +40,12 @@ class CheckoutSection extends StatelessWidget {
           ElevatedButton(
             onPressed: onCheckout,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.success,
-              minimumSize: const Size(138, 37),
+              backgroundColor: AppColors.purchaseButton,
+              // minimumSize: const Size(138, 37),
+              minimumSize: const Size(150, 60),
+
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
             child: const Text(

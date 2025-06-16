@@ -1,7 +1,13 @@
-// product_cart_card.dart
+// lib/presentation/widgets/product_cart_card.dart
+
+import 'package:app_ecommerce/core/constants/app_colors.dart';
+import 'package:app_ecommerce/core/constants/app_sizes.dart';
+import 'package:app_ecommerce/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_text_styles.dart';
-import '../../../core/constants/app_colors.dart';
+
+// lib/presentation/widgets/product_cart_card.dart
+
+import 'package:flutter/material.dart';
 
 class ProductCartCard extends StatelessWidget {
   final String imageUrl;
@@ -13,7 +19,7 @@ class ProductCartCard extends StatelessWidget {
   final VoidCallback onRemove;
 
   const ProductCartCard({
-    super.key,
+    Key? key,
     required this.imageUrl,
     required this.title,
     required this.description,
@@ -21,89 +27,116 @@ class ProductCartCard extends StatelessWidget {
     required this.quantity,
     required this.onAdd,
     required this.onRemove,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black.withOpacity(0.2)),
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
+      height: 80,
+      // padding interno mais enxuto
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSizes.sm,
+        vertical: AppSizes.sm,
       ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              imageUrl,
-              width: 76,
-              height: 74,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            width: 230,
-            height: 74,
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.cartProductName),
-                const SizedBox(height: 2),
-                Text(
-                  description,
-                  style: AppTextStyles.cartProductDescription,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-                const Spacer(),
-                Text(
-                  'R\$ ${price.toStringAsFixed(2)}',
-                  style: AppTextStyles.cartProductPrice,
-                ),
-              ],
-            ),
-          ),
-          Column(
-            children: [
-              GestureDetector(
-                onTap: onRemove,
-                child: Container(
-                  width: 58,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: AppColors.success,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Icon(
-                    quantity > 1 ? Icons.remove : Icons.delete_outline,
-                    size: 12,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text('$quantity', style: AppTextStyles.cartProductQuantity),
-              const SizedBox(height: 4),
-              GestureDetector(
-                onTap: onAdd,
-                child: Container(
-                  width: 58,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: AppColors.success,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: const Icon(Icons.add, size: 12, color: Colors.white),
-                ),
-              ),
-            ],
-          ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 2, offset: Offset(0, 1)),
         ],
+      ),
+      child: Center(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Imagem menor
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius / 2),
+              child: Image.network(
+                imageUrl,
+                width: AppSizes.defaultControlHeight, // de 1.2x para 1x
+                height: AppSizes.defaultControlHeight,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            const SizedBox(width: AppSizes.sm),
+
+            // Texto compacto
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: AppTextStyles.productName.copyWith(fontSize: 12),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: AppSizes.xs),
+                  Text(
+                    description,
+                    style: AppTextStyles.productSub.copyWith(fontSize: 8),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: AppSizes.xs),
+                  Text(
+                    'R\$ ${price.toStringAsFixed(2)}',
+                    style: AppTextStyles.productPrice.copyWith(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(width: AppSizes.sm),
+
+            // Botão de quantidade compacto
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.xs,
+                vertical: AppSizes.xs / 2,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.purchaseButton,
+                borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: onRemove,
+                    child: const Icon(
+                      Icons.remove,
+                      size: 14,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSizes.xs,
+                    ),
+                    child: Text(
+                      quantity.toString(),
+                      style: AppTextStyles.productPrice.copyWith(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: onAdd,
+                    child: const Icon(Icons.add, size: 14, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

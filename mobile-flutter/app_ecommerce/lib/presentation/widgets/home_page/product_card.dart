@@ -15,9 +15,10 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartController = Get.find<CartController>();
-    // Usa a URL do model se existir, senão sorteia uma asset
+
+    // Imagem ou placeholder
     final imageWidget =
-        (product.imageUrl.isNotEmpty)
+        product.imageUrl.isNotEmpty
             ? Image.network(
               product.imageUrl,
               fit: BoxFit.cover,
@@ -35,104 +36,142 @@ class ProductCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSizes.borderRadius),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min, // <-- minimiza vertical
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Imagem com badge de desconto se houver
-            Stack(
-              children: [
-                AspectRatio(aspectRatio: 1, child: imageWidget),
-                if (product.hasDiscount && product.discountValue > 0)
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.bannerButtonBg,
-                        borderRadius: BorderRadius.circular(
-                          AppSizes.buttonRadius,
-                        ),
-                      ),
-                      child: Text(
-                        '-${(product.discountValue * 100).toInt()}%',
-                        style: AppTextStyles.sectionLink.copyWith(
-                          color: Colors.white,
-                          fontSize: 10,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
+            // 1) Imagem com proporção fixa
+            AspectRatio(aspectRatio: 1, child: imageWidget),
 
-            // Conteúdo textual
+            // 2) Conteúdo textual e botões
             Padding(
-              padding: const EdgeInsets.all(AppSizes.cardSpacing),
+              padding: const EdgeInsets.all(AppSizes.sm),
               child: Column(
+                mainAxisSize: MainAxisSize.min, // <-- minimiza vertical
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Nome do produto
+                  // Nome e categoria
                   Text(
                     product.name,
                     style: AppTextStyles.productName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
-
-                  // Categoria (no lugar de subtitle)
+                  const SizedBox(height: AppSizes.xs),
                   Text(
                     product.category,
                     style: AppTextStyles.productSub,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSizes.sm),
 
-                  // Preço e botão
+                  // Preço + botão ou controles de quantidade
                   Row(
                     children: [
+                      // Preço ocupa o que puder
                       Expanded(
                         child: Text(
                           'R\$ ${product.price.toStringAsFixed(2)}',
                           style: AppTextStyles.productPrice,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          print("Joao");
 
-                          cartController.addToCart(
-                            CartItem(
-                              imageUrl: RandomImageService.getImageFor(
-                                product.name,
+                      // Controle de adicionar/remover
+                      Obx(() {
+                        final idx = cartController.cartItems.indexWhere(
+                          (i) =>
+                              i.title == product.name &&
+                              i.description == (product.description ?? ''),
+                        );
+                        if (idx >= 0) {
+                          final qty = cartController.cartItems[idx].quantity;
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSizes.xs,
+                              vertical: AppSizes.xs,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.purchaseButton,
+                              borderRadius: BorderRadius.circular(
+                                AppSizes.borderRadius,
                               ),
-                              title: product.name,
-                              description: product.description ?? '',
-                              price: product.price.toDouble(),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Botão “–”
+                                GestureDetector(
+                                  onTap:
+                                      () =>
+                                          cartController.decreaseQuantity(idx),
+                                  child: const Icon(
+                                    Icons.remove,
+                                    size: AppSizes.iconSize,
+                                    color: AppColors.purchaseIcon,
+                                  ),
+                                ),
+                                // Quantidade
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: AppSizes.xs,
+                                  ),
+                                  child: Text(
+                                    qty.toString(),
+                                    style: AppTextStyles.productPrice.copyWith(
+                                      color: Colors.white, // faz o texto branco
+                                      fontWeight:
+                                          FontWeight.bold, // deixa em negrito
+                                    ),
+                                  ),
+                                ),
+                                // Botão “+”
+                                GestureDetector(
+                                  onTap:
+                                      () =>
+                                          cartController.increaseQuantity(idx),
+                                  child: const Icon(
+                                    Icons.add,
+                                    size: AppSizes.iconSize,
+                                    color: AppColors.purchaseIcon,
+                                  ),
+                                ),
+                              ],
                             ),
                           );
-                        }, // adicionar ao carrinho
-                        borderRadius: BorderRadius.circular(
-                          AppSizes.buttonRadius,
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: AppColors.purchaseButton,
-                            borderRadius: BorderRadius.circular(
-                              AppSizes.buttonRadius,
+                        }
+
+                        // Estado inicial: só o “+”
+                        return GestureDetector(
+                          onTap: () {
+                            cartController.addToCart(
+                              CartItem(
+                                imageUrl: RandomImageService.getImageFor(
+                                  product.name,
+                                ),
+                                title: product.name,
+                                description: product.description ?? '',
+                                price: product.price.toDouble(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(AppSizes.xs),
+                            decoration: BoxDecoration(
+                              color: AppColors.purchaseButton,
+                              borderRadius: BorderRadius.circular(
+                                AppSizes.borderRadius,
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              size: AppSizes.iconSize,
+                              color: AppColors.purchaseIcon,
                             ),
                           ),
-                          child: Icon(
-                            Icons.add,
-                            size: AppSizes.iconSize,
-                            color: AppColors.purchaseIcon,
-                          ),
-                        ),
-                      ),
+                        );
+                      }),
                     ],
                   ),
                 ],

@@ -61,4 +61,23 @@ export class ProductsController {
       return this.european.findById(id);
     }
   }
+
+    /**
+   * GET /products/category/:category
+   * Retorna todos os produtos da categoria, de ambas as APIs
+   */
+  @Get('category/:category')
+  async getByCategory(@Param('category') category: string): Promise<ProductDto[]> {
+    // Busca tudo e filtra localmente pela propriedade `category`
+    const [ allBr, allEu ] = await Promise.all([
+      this.brazilian.findAll(),
+      this.european.findAll(),
+    ]);
+
+    const brFilt = allBr.filter(p => p.category?.trim() === category);
+    const euFilt = allEu.filter(p => p.category?.trim() === category);
+
+    return [...brFilt, ...euFilt];
+  }
+
 }

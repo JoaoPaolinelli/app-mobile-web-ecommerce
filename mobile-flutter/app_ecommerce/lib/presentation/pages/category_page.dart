@@ -1,6 +1,7 @@
 // lib/presentation/pages/category_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_colors.dart';
@@ -16,12 +17,41 @@ class CategoryPage extends StatelessWidget {
   final CategoryController c = Get.put(CategoryController());
   final HomeController h = Get.find();
 
+  // Mapeamento de categoria → ícone
+  final Map<String, IconData> _iconMap = {
+    'Fantastic': FontAwesomeIcons.star,
+    'Refined': FontAwesomeIcons.gem,
+    'Practical': FontAwesomeIcons.toolbox,
+    'Small': FontAwesomeIcons.leaf,
+    'Sleek': FontAwesomeIcons.bolt,
+    'Generic': FontAwesomeIcons.cube,
+    'Handmade': FontAwesomeIcons.handSparkles,
+    'Gorgeous': FontAwesomeIcons.heart,
+    'Licensed': FontAwesomeIcons.certificate,
+    'Rustic': FontAwesomeIcons.tree,
+    'Unbranded': FontAwesomeIcons.question,
+    'Ergonomic': FontAwesomeIcons.user,
+    'Intelligent': FontAwesomeIcons.brain,
+    'Incredible': FontAwesomeIcons.rocket,
+    'Awesome': FontAwesomeIcons.thumbsUp,
+    'Tasty': FontAwesomeIcons.utensils,
+    'Handcrafted': FontAwesomeIcons.tools,
+    'Roupas': FontAwesomeIcons.tshirt,
+    'Elegant': FontAwesomeIcons.crown,
+    'Oriental': FontAwesomeIcons.pagelines,
+    'Electronic': FontAwesomeIcons.tv,
+    'Bespoke': FontAwesomeIcons.paintBrush,
+    'Recycled': FontAwesomeIcons.recycle,
+    'Luxurious': FontAwesomeIcons.diamond,
+    'Modern': FontAwesomeIcons.mobileAlt,
+    'Fresh': FontAwesomeIcons.appleAlt,
+  };
+
   @override
   Widget build(BuildContext context) {
-    // Calcula largura de cada coluna do grid (e dos destaques)
     final totalWidth = MediaQuery.of(context).size.width;
-    final horizontalPadding = AppSizes.padding * 2; // left+right
-    const gap = 16.0; // crossAxisSpacing
+    final gap = AppSizes.md;
+    final horizontalPadding = AppSizes.md * 2;
     final itemWidth = (totalWidth - horizontalPadding - gap * 2) / 3;
 
     return Scaffold(
@@ -29,7 +59,7 @@ class CategoryPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Categorias', style: AppTextStyles.sectionTitle),
         centerTitle: true,
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.background,
         elevation: 0,
       ),
       body: Obx(() {
@@ -47,28 +77,21 @@ class CategoryPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: AppSizes.padding),
+              const SizedBox(height: AppSizes.md),
 
               // === Destaques ===
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.padding,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
                 child: Text('Destaques', style: AppTextStyles.sectionTitle),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSizes.sm),
               SizedBox(
-                height:
-                    itemWidth +
-                    AppSizes.cardSpacing *
-                        2, // altura igual ao grid item (aprox)
+                height: itemWidth + AppSizes.lg * 2,
                 child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSizes.padding,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
                   scrollDirection: Axis.horizontal,
                   itemCount: highlights.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: gap),
+                  separatorBuilder: (_, __) => SizedBox(width: gap),
                   itemBuilder: (ctx, i) {
                     final item = highlights[i];
                     return SizedBox(
@@ -79,7 +102,7 @@ class CategoryPage extends StatelessWidget {
                         stripeColor: item.stripeColor,
                         onTap:
                             () => Get.toNamed(
-                              '/products?category=${item.category}',
+                              '/category_products?category=${Uri.encodeComponent(item.category)}',
                             ),
                       ),
                     );
@@ -87,43 +110,43 @@ class CategoryPage extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSizes.lg),
 
               // === Todas as Categorias ===
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.padding,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
                 child: Text('Categorias', style: AppTextStyles.sectionTitle),
               ),
-              const SizedBox(height: 12),
-              GridView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.padding,
+              const SizedBox(height: AppSizes.sm),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: c.categories.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: gap,
+                    mainAxisSpacing: gap,
+                    childAspectRatio: 0.8,
+                  ),
+                  itemBuilder: (ctx, i) {
+                    final cat = c.categories[i];
+                    final icon =
+                        _iconMap[cat.category] ?? FontAwesomeIcons.tags;
+                    return CategoryCard(
+                      title: cat.category,
+                      icon: icon,
+                      onTap:
+                          () => Get.toNamed(
+                            '/category_products?category=${Uri.encodeComponent(cat.category)}',
+                          ),
+                    );
+                  },
                 ),
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: c.categories.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: gap,
-                  mainAxisSpacing: gap,
-                  childAspectRatio: 0.8,
-                ),
-                itemBuilder: (ctx, i) {
-                  final cat = c.categories[i];
-                  return CategoryCard(
-                    // category: cat,
-                    title: cat.category,
-                    // count: cat.count,
-                    onTap:
-                        () => Get.toNamed('/products?category=${cat.category}'),
-                    imageAsset: 'assets/images/Camiseta_default.jpg',
-                  );
-                },
               ),
 
-              const SizedBox(height: AppSizes.padding),
+              const SizedBox(height: AppSizes.md),
             ],
           ),
         );

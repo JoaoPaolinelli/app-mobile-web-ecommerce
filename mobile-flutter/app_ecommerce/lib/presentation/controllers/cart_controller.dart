@@ -60,6 +60,7 @@ class CartController extends GetxController {
 
   Future<void> increaseQuantity(int index) async {
     cartItems[index].quantity++;
+    cartItems.refresh(); // <- força atualização reativa
     await _saveCartToPrefs();
   }
 
@@ -69,6 +70,7 @@ class CartController extends GetxController {
     } else {
       cartItems.removeAt(index);
     }
+    cartItems.refresh(); // <- força atualização reativa
     await _saveCartToPrefs();
   }
 

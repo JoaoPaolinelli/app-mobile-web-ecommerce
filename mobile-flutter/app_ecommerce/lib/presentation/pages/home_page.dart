@@ -1,3 +1,5 @@
+import 'package:app_ecommerce/presentation/controllers/notification_controller.dart';
+import 'package:app_ecommerce/presentation/widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +13,9 @@ import '../widgets/home_page/product_section.dart';
 class HomePage extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
   final cartController = Get.find<CartController>();
+  final nc = Get.put(NotificationController());
+
+  // final bc = Get.find<NotificationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +30,10 @@ class HomePage extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: AppSizes.md),
-            child: IconButton(
-              icon: const Icon(Icons.notifications),
-              iconSize: 24,
-              onPressed: () {},
+            // Aqui trocamos o IconButton por BellIcon
+            child: Container(
+              margin: EdgeInsets.only(right: 10),
+              child: SizedBox(width: 48, height: 48, child: NotificationIcon()),
             ),
           ),
         ],
@@ -50,7 +55,7 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: AppSizes.lg),
               ProductSection(
                 title: 'Mais pedidos',
-                onTap: () => controller.navIndex.value = 1,
+                onTap: () => nc.anim,
                 products: controller.mostOrdered,
               ),
               const SizedBox(height: AppSizes.lg),

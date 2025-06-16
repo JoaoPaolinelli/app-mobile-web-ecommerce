@@ -56,9 +56,6 @@ class ApiService {
     }
   }
 
-  // lib/services/api_service.dart
-  // lib/services/api_service.dart
-
   BannerModel fetchBannerSync() {
     return BannerModel(
       title: 'Dia dos namorados Devnology',
@@ -83,21 +80,6 @@ class ApiService {
     throw Exception('Erro ao carregar categorias: ${res.statusCode}');
   }
 
-  // lib/services/api_service.dart
-
-  // Future<List<ProductModel>> searchProducts(String q) async {
-  //   final uri = Uri.parse('$_baseUrl/products/search?q=$q');
-  //   final res = await http.get(uri);
-  //   if (res.statusCode == 200) {
-  //     final list =
-  //         (json.decode(res.body) as List)
-  //             .map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
-  //             .toList();
-  //     return list;
-  //   }
-  //   throw Exception('Erro na busca: ${res.statusCode}');
-  // }
-
   /// Busca todos os produtos (unificados Brasil + Europa)
   Future<List<ProductModel>> fetchAllProducts() async {
     final uri = Uri.parse('$_baseUrl/products');
@@ -120,6 +102,23 @@ class ApiService {
 
     if (response.statusCode != 200) {
       throw Exception('Erro na busca: ${response.statusCode}');
+    }
+
+    final List<dynamic> data = json.decode(response.body) as List<dynamic>;
+    return data
+        .map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Busca produtos de uma categoria específica (Brazil + Europe)
+  Future<List<ProductModel>> fetchByCategory(String category) async {
+    final uri = Uri.parse('$_baseUrl/products/category/$category');
+    final response = await http.get(uri);
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Erro ao carregar categoria $category: ${response.statusCode}',
+      );
     }
 
     final List<dynamic> data = json.decode(response.body) as List<dynamic>;

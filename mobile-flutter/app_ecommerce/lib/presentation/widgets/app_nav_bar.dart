@@ -1,59 +1,53 @@
+// lib/presentation/widgets/app_bottom_nav.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_colors.dart';
+import '../controllers/cart_controller.dart';
+import '../controllers/navigation_controller.dart';
 
 class AppBottomNav extends StatelessWidget {
-  final int currentIndex;
-  final ValueChanged<int> onTap;
-  const AppBottomNav({
-    super.key,
-    required this.currentIndex,
-    required this.onTap,
-  });
+  const AppBottomNav({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Lista de pares [assetName, rota]
+    final nav = Get.find<NavigationController>();
+    final cartController = Get.find<CartController>();
+
     final items = [
-      ['home.png', '/home'],
-      ['category.png', '/category'],
-      ['search.png', '/search'],
-      ['profile.png', '/profile'],
-      ['cart.png', '/cart'],
+      'home.png',
+      'category.png',
+      'search.png',
+      'profile.png',
+      'cart.png',
     ];
 
     return SafeArea(
       top: false,
       child: Container(
         height: 64,
-        // margin: const EdgeInsets.all(AppSizes.padding / 2),
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 32,
-
-          // vertical: 8,
-        ),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 32),
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppSizes.borderRadius * 1.5),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
+          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(items.length, (i) {
-            final asset = 'assets/icons/${items[i][0]}';
-            final route = items[i][1];
-            final isActive = i == currentIndex;
-            return GestureDetector(
-              onTap: () {
-                if (currentIndex != i) {
-                  onTap(i);
-                  Get.toNamed(route);
-                }
-              },
-              child: ColorFiltered(
+        child: Obx(() {
+          final cartCount = cartController.cartItems.fold<int>(
+            0,
+            (sum, item) => sum + item.quantity,
+          );
+          final badgeText = cartCount > 9 ? '9+' : '$cartCount';
+
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(items.length, (i) {
+              final asset = 'assets/icons/${items[i]}';
+              final isActive = i == nav.currentIndex.value;
+
+              Widget icon = ColorFiltered(
                 colorFilter: ColorFilter.mode(
                   isActive
                       ? AppColors.bannerButtonBg
@@ -65,10 +59,54 @@ class AppBottomNav extends StatelessWidget {
                   width: AppSizes.iconSize,
                   height: AppSizes.iconSize,
                 ),
-              ),
-            );
-          }),
-        ),
+              );
+
+              // badge no carrinho
+              if (i == 4 && cartCount > 0) {
+                icon = Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    icon,
+                    Positioned(
+                      top: -8,
+                      right: -2,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.purchaseButton,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppColors.surface,
+                            width: 1.5,
+                          ),
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 20,
+                          minHeight: 20,
+                        ),
+                        child: Center(
+                          child: Text(
+                            badgeText,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+
+              return GestureDetector(onTap: () => nav.setPage(i), child: icon);
+            }),
+          );
+        }),
       ),
     );
   }

@@ -15,7 +15,7 @@ class _PedidoConfirmadoPageState extends State<PedidoConfirmadoPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 5), () {
       Get.offAllNamed('/home');
     });
   }
@@ -30,8 +30,8 @@ class _PedidoConfirmadoPageState extends State<PedidoConfirmadoPage> {
           children: [
             Lottie.asset(
               'assets/animation/check.json',
-              width: 150,
-              height: 150,
+              width: 300,
+              height: 300,
               repeat: false,
             ),
             const SizedBox(height: 20),

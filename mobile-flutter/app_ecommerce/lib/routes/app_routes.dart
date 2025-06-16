@@ -1,5 +1,6 @@
 import 'package:app_ecommerce/presentation/pages/cart_page.dart';
 import 'package:app_ecommerce/presentation/pages/category_page.dart';
+import 'package:app_ecommerce/presentation/pages/category_product_page.dart';
 import 'package:app_ecommerce/presentation/pages/confirm_payment_page.dart';
 import 'package:app_ecommerce/presentation/pages/payment_page.dart';
 import 'package:app_ecommerce/presentation/pages/phone_number_page.dart';
@@ -22,6 +23,7 @@ abstract class AppRoutes {
   static const String phoneNumber = '/phone';
   static const String payment = '/payment';
   static const String confirmPayment = '/confirm';
+  static const String categoryProduct = '/category_products';
 
   // Lista de GetPage
   static final pages = <GetPage>[
@@ -35,6 +37,10 @@ abstract class AppRoutes {
     GetPage(
       name: AppRoutes.confirmPayment,
       page: () => ConfirmacaoPedidoPage(),
+    ),
+    GetPage(
+      name: AppRoutes.categoryProduct,
+      page: () => CategoryProductsPage(),
     ),
   ];
 }

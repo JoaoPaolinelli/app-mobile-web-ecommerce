@@ -1,8 +1,11 @@
+import 'package:app_ecommerce/core/constants/app_colors.dart';
 import 'package:app_ecommerce/presentation/controllers/confirmar_pagamento_controller.dart';
+import 'package:app_ecommerce/presentation/controllers/notification_controller.dart';
 import 'package:app_ecommerce/presentation/controllers/payment_controller.dart';
 import 'package:app_ecommerce/presentation/widgets/confirmacao_pedido/complemento.dart';
 import 'package:app_ecommerce/presentation/widgets/confirmacao_pedido/info_tile.dart';
 import 'package:app_ecommerce/presentation/widgets/confirmacao_pedido/total_pagar.dart';
+import 'package:app_ecommerce/presentation/widgets/payment_page/full_price_widget.dart';
 import 'package:app_ecommerce/presentation/widgets/phone_number_page/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +19,7 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
     final confirmacaoController = Get.put(ConfirmacaoController());
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -81,15 +84,19 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 const ComplementoInput(),
                 const SizedBox(height: 24),
-                const TotalPagarRow(valor: 'R\$ 78,99'),
+                TotalPagarWidget(),
                 const SizedBox(height: 32),
                 SizedBox(
                   width: double.infinity,
                   height: 58,
                   child: PrimaryButton(
                     text: 'Confirmar pedido',
-                    onPressed: () {
+                    onPressed: () async {
                       confirmacaoController.confirmarPedidoSimulado();
+                      Get.find<NotificationController>().ring();
+                      await Future.delayed(const Duration(milliseconds: 100));
+                      final bc = Get.find<NotificationController>();
+                      bc.ring();
                     },
                   ),
                 ),

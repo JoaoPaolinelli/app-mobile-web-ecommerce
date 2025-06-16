@@ -117,8 +117,8 @@ class AppTextStyles {
 
   // Título da sessão de produtos
   static const cartProductsTitle = TextStyle(
-    fontSize: 13,
-    fontWeight: FontWeight.w500,
+    fontSize: 15,
+    fontWeight: FontWeight.w600,
   );
 
   // Título do produto no card
