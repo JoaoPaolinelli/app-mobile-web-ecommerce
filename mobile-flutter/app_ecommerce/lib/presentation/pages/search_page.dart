@@ -5,8 +5,8 @@ import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../../presentation/widgets/app_nav_bar.dart';
-import '../../presentation/widgets/product_card.dart';
-import '../../presentation/widgets/section_header.dart';
+import '../widgets/home_page/product_card.dart';
+import '../widgets/home_page/section_header.dart';
 import '../controllers/search_controller.dart';
 import '../controllers/home_controller.dart';
 

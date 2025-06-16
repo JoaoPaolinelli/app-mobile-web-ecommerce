@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  api:
+    build: ./api-devnology
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api-devnology:/app
+    command: npm run start:dev
+    restart: unless-stopped
+    
+
+  flutter-web:
+    build:
+      context: ./mobile-flutter/app_ecommerce
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+

@@ -1,4 +1,8 @@
+// lib/presentation/controllers/cart_controller.dart
+
+import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CartItem {
   final String imageUrl;
@@ -14,33 +18,79 @@ class CartItem {
     required this.price,
     this.quantity = 1,
   });
+
+  factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
+    imageUrl: json['imageUrl'],
+    title: json['title'],
+    description: json['description'],
+    price: (json['price'] as num).toDouble(),
+    quantity: json['quantity'] as int,
+  );
+
+  Map<String, dynamic> toJson() => {
+    'imageUrl': imageUrl,
+    'title': title,
+    'description': description,
+    'price': price,
+    'quantity': quantity,
+  };
 }
 
 class CartController extends GetxController {
   final RxList<CartItem> cartItems = <CartItem>[].obs;
+  static const _prefsKey = 'cart_items';
 
-  void addToCart(CartItem item) {
-    final index = cartItems.indexWhere(
+  @override
+  void onInit() {
+    super.onInit();
+    _loadCartFromPrefs();
+  }
+
+  Future<void> addToCart(CartItem item) async {
+    final idx = cartItems.indexWhere(
       (i) => i.title == item.title && i.description == item.description,
     );
-    if (index != -1) {
-      cartItems[index].quantity++;
+    if (idx != -1) {
+      cartItems[idx].quantity++;
     } else {
       cartItems.add(item);
     }
+    await _saveCartToPrefs();
   }
 
-  void increaseQuantity(int index) => cartItems[index].quantity++;
-  void decreaseQuantity(int index) {
+  Future<void> increaseQuantity(int index) async {
+    cartItems[index].quantity++;
+    await _saveCartToPrefs();
+  }
+
+  Future<void> decreaseQuantity(int index) async {
     if (cartItems[index].quantity > 1) {
       cartItems[index].quantity--;
     } else {
       cartItems.removeAt(index);
     }
+    await _saveCartToPrefs();
   }
 
-  void clearCart() => cartItems.clear();
+  Future<void> clearCart() async {
+    cartItems.clear();
+    await _saveCartToPrefs();
+  }
 
   double get total =>
       cartItems.fold(0.0, (sum, item) => sum + item.price * item.quantity);
+
+  Future<void> _loadCartFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final stored = prefs.getStringList(_prefsKey) ?? [];
+    cartItems.value =
+        stored.map((str) => CartItem.fromJson(jsonDecode(str))).toList();
+  }
+
+  Future<void> _saveCartToPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList =
+        cartItems.map((item) => jsonEncode(item.toJson())).toList();
+    await prefs.setStringList(_prefsKey, jsonList);
+  }
 }

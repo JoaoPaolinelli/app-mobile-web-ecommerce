@@ -2,12 +2,11 @@ import 'package:app_ecommerce/core/utils/random_images_service.dart';
 import 'package:app_ecommerce/presentation/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import '../../core/constants/app_sizes.dart';
-import '../../core/constants/app_text_styles.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/utils/random_images.dart';
-import '../../models/product_model.dart';
+import '../../../core/constants/app_sizes.dart';
+import '../../../core/constants/app_text_styles.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/utils/random_images.dart';
+import '../../../models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;

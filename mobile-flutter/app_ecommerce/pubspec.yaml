@@ -40,6 +40,8 @@ dependencies:
   intl_phone_field: ^3.2.0
   flutter_multi_formatter: ^2.12.3
   mask_text_input_formatter: ^2.7.0
+  shared_preferences: ^2.2.2
+  lottie: ^3.1.0
 
 
 
@@ -102,6 +104,7 @@ flutter:
     - assets/icons/search.png
     - assets/icons/profile.png
     - assets/icons/cart.png
+    - assets/animation/check.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
