@@ -30,10 +30,10 @@ class HomeController extends GetxController {
 
   Future<void> loadData() async {
     try {
-      final most = await _api.fetchMostOrdered(limit: 3);
+      final most = await _api.fetchMostOrdered(limit: 10);
       mostOrdered.assignAll(most);
 
-      final fav = await _api.fetchFavorites(limit: 3);
+      final fav = await _api.fetchFavorites(limit: 10);
       favorites.assignAll(fav);
     } catch (e) {
       Get.snackbar('Erro', e.toString());

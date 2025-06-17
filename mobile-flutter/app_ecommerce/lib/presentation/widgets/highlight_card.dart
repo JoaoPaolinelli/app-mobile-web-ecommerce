@@ -1,5 +1,6 @@
 // lib/presentation/widgets/highlight_card.dart
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
@@ -61,7 +62,10 @@ class HighlightCard extends StatelessWidget {
           width: double.infinity,
           child: Text(
             title,
-            style: AppTextStyles.productName.copyWith(fontSize: 12),
+            style: AppTextStyles.productName.copyWith(
+              fontSize: 12,
+              fontWeight: FontWeight.w900,
+            ),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,

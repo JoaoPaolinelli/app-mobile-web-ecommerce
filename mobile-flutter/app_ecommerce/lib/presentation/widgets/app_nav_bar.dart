@@ -71,14 +71,54 @@ class AppBottomNav extends StatelessWidget {
               );
 
               // badge no carrinho
-              if (i == 4 && cartCount > 0) {
+              if ((i == 4 && 0 < cartCount) && cartCount <= 9) {
                 icon = Stack(
                   clipBehavior: Clip.none,
                   children: [
                     icon,
                     Positioned(
-                      top: -8,
-                      right: -2,
+                      top: -20,
+                      right: -4,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.purchaseButton,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppColors.surface,
+                            width: 1.5,
+                          ),
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 20,
+                          minHeight: 20,
+                        ),
+                        child: Center(
+                          child: Text(
+                            badgeText,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+              if (i == 4 && cartCount > 9) {
+                icon = Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    icon,
+                    Positioned(
+                      top: -20,
+                      right: -6,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 6,

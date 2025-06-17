@@ -16,7 +16,7 @@ class ApiService {
       return 'http://localhost:3000';
     } else if (Platform.isAndroid) {
       // Android Emulator
-      return 'http://10.0.2.2:3000';
+      return 'http://10.0.3.2:3000';
     } else {
       // iOS Simulator e dispositivos reais
       return 'http://localhost:3000';

@@ -52,7 +52,7 @@ class ProductCartCard extends StatelessWidget {
             // Imagem menor
             ClipRRect(
               borderRadius: BorderRadius.circular(AppSizes.borderRadius / 2),
-              child: Image.network(
+              child: Image.asset(
                 imageUrl,
                 width: AppSizes.defaultControlHeight, // de 1.2x para 1x
                 height: AppSizes.defaultControlHeight,

@@ -8,23 +8,23 @@ import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../controllers/category_product_controller.dart';
-import '../controllers/home_controller.dart';
 import '../widgets/home_page/product_card.dart';
 
 class CategoryProductsPage extends StatelessWidget {
-  // Controllers
+  // O parâmetro "category" virá sempre por Get.parameters['category']
   final CategoryProductsController cpc = Get.put(CategoryProductsController());
-  final HomeController hc = Get.find();
+
+  CategoryProductsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Decodifica eventuais parâmetros de URL
-    final categoryTitle = Uri.decodeComponent(cpc.category);
+    // Decodifica o nome da categoria ou filtro
+    final title = Uri.decodeComponent(cpc.category);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(categoryTitle, style: AppTextStyles.sectionTitle),
+        title: Text(title, style: AppTextStyles.sectionTitle),
         centerTitle: true,
         backgroundColor: AppColors.surface,
         elevation: 0,
@@ -37,7 +37,7 @@ class CategoryProductsPage extends StatelessWidget {
         if (cpc.products.isEmpty) {
           return Center(
             child: Text(
-              'Nenhum produto em "$categoryTitle"',
+              'Nenhum produto em "$title"',
               style: AppTextStyles.sectionTitle,
             ),
           );
@@ -53,11 +53,12 @@ class CategoryProductsPage extends StatelessWidget {
               mainAxisSpacing: AppSizes.md,
               childAspectRatio: 0.7,
             ),
-            itemBuilder: (_, i) => ProductCard(product: cpc.products[i]),
+            itemBuilder: (ctx, i) {
+              return ProductCard(product: cpc.products[i]);
+            },
           ),
         );
       }),
-      // Não envolve em Obx — o próprio AppBottomNav já é reativo
       bottomNavigationBar: const AppBottomNav(),
     );
   }

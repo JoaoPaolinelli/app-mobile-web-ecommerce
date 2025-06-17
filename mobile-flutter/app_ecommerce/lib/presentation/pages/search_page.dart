@@ -1,3 +1,5 @@
+import 'package:app_ecommerce/models/product_model.dart';
+import 'package:app_ecommerce/presentation/pages/product_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -61,7 +63,15 @@ class SearchPage extends StatelessWidget {
                 ),
                 child: SectionHeader(
                   title: 'Dia dos namorados no E-Buy',
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(
+                      () => GenericListingPage<ProductModel>(
+                        title: 'Dia dos namorados no E-Buy',
+                        items: hc.mostOrdered,
+                        itemBuilder: (p) => ProductCard(product: p),
+                      ),
+                    );
+                  },
                 ),
               ),
               _buildHorizontalList(all),
@@ -71,9 +81,18 @@ class SearchPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSizes.padding,
                 ),
-                child: SectionHeader(
+                child: // Seção Produtos com desconto.
+                    SectionHeader(
                   title: 'Produtos com Desconto',
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(
+                      () => GenericListingPage<ProductModel>(
+                        title: 'Produtos com Desconto',
+                        items: hc.mostOrdered,
+                        itemBuilder: (p) => ProductCard(product: p),
+                      ),
+                    );
+                  },
                 ),
               ),
               _buildHorizontalList(all.where((p) => p.hasDiscount).toList()),
@@ -83,7 +102,18 @@ class SearchPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSizes.padding,
                 ),
-                child: SectionHeader(title: 'Saúde e Fit', onTap: () {}),
+                child: SectionHeader(
+                  title: 'Saúde e Fit',
+                  onTap: () {
+                    Get.to(
+                      () => GenericListingPage<ProductModel>(
+                        title: 'Saúde e Fit',
+                        items: hc.mostOrdered,
+                        itemBuilder: (p) => ProductCard(product: p),
+                      ),
+                    );
+                  },
+                ),
               ),
               _buildHorizontalList(all),
             ],

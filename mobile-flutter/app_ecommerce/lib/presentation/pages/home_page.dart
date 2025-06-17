@@ -1,4 +1,8 @@
+import 'package:app_ecommerce/models/product_model.dart';
 import 'package:app_ecommerce/presentation/controllers/notification_controller.dart';
+import 'package:app_ecommerce/presentation/pages/product_list_page.dart';
+import 'package:app_ecommerce/presentation/widgets/home_page/product_card.dart';
+import 'package:app_ecommerce/presentation/widgets/home_page/section_header.dart';
 import 'package:app_ecommerce/presentation/widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,7 +37,7 @@ class HomePage extends StatelessWidget {
             // Aqui trocamos o IconButton por BellIcon
             child: Container(
               margin: EdgeInsets.only(right: 10),
-              child: SizedBox(width: 48, height: 48, child: NotificationIcon()),
+              child: SizedBox(width: 64, height: 64, child: NotificationIcon()),
             ),
           ),
         ],
@@ -53,12 +57,36 @@ class HomePage extends StatelessWidget {
                 child: BannerWidget(banner: controller.banner),
               ),
               const SizedBox(height: AppSizes.lg),
+              SectionHeader(
+                title: 'Mais Pedidos',
+                onTap: () {
+                  Get.to(
+                    () => GenericListingPage<ProductModel>(
+                      title: 'Mais Pedidos',
+                      items: controller.mostOrdered,
+                      itemBuilder: (p) => ProductCard(product: p),
+                    ),
+                  );
+                },
+              ),
               ProductSection(
                 title: 'Mais pedidos',
-                onTap: () => nc.anim,
-                products: controller.mostOrdered,
+                onTap: () => {},
+                products: controller.favorites,
               ),
               const SizedBox(height: AppSizes.lg),
+              SectionHeader(
+                title: 'Favoritos da Região',
+                onTap: () {
+                  Get.to(
+                    () => GenericListingPage<ProductModel>(
+                      title: 'Favoritos da Região',
+                      items: controller.mostOrdered,
+                      itemBuilder: (p) => ProductCard(product: p),
+                    ),
+                  );
+                },
+              ),
               ProductSection(
                 title: 'Favoritos da região',
                 onTap: () => controller.navIndex.value = 1,

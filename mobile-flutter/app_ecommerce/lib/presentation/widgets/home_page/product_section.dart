@@ -21,7 +21,7 @@ class ProductSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionHeader(title: title, onTap: onTap),
+        // SectionHeader(title: title),
         SizedBox(height: AppSizes.md),
         SizedBox(
           height: 220,

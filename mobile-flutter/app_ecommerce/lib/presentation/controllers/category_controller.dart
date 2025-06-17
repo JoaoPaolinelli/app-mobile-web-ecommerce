@@ -13,12 +13,12 @@ class CategoryController extends GetxController {
       <HighlightModel>[
         HighlightModel(
           category: 'Arraia E-Buy',
-          imageAsset: 'assets/images/Arraia.png',
+          imageAsset: 'assets/images/arraial01.png',
           stripeColor: AppColors.success,
         ),
         HighlightModel(
           category: 'Promoções',
-          imageAsset: 'assets/images/promocao.png',
+          imageAsset: 'assets/images/Promo.png',
           stripeColor: AppColors.error,
         ),
       ].obs;
@@ -46,9 +46,9 @@ class CategoryController extends GetxController {
       if (list.isNotEmpty) {
         final first = list.first;
         dynamicHighlight.value = HighlightModel(
-          category: first.category,
+          category: "Dia dos namorados",
           // monte o nome do asset conforme seu padrão:
-          imageAsset: 'assets/images/vestido.jpeg',
+          imageAsset: 'assets/images/diaDosNamorados.png',
           stripeColor: AppColors.success, // ou outra cor dinâmica
         );
       }

@@ -22,7 +22,7 @@ class BannerWidget extends StatelessWidget {
             // Imagem de fundo
             Center(
               child: Image.asset(
-                'assets/images/banner.png',
+                'assets/images/Banner.png',
                 fit: BoxFit.contain,
                 // width: double.infinity,
                 height: 180,
@@ -32,11 +32,11 @@ class BannerWidget extends StatelessWidget {
             // Conteúdo sobreposto
             Container(
               child: Positioned(
-                left: AppSizes.padding + 48, // 16px
+                left: AppSizes.padding + 16, // 16px
                 top: AppSizes.padding + 4, // 16px
                 child: SizedBox(
                   width: 200, // largura fixa do texto
-                  height: 180 - AppSizes.padding * 2, // ajusta à altura interna
+                  height: 210 - AppSizes.padding * 2, // ajusta à altura interna
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -91,25 +91,29 @@ class BannerWidget extends StatelessWidget {
                         ),
                       ],
 
-                      const Spacer(), // empurra o botão para baixo
+                      // SizedBox(height: 8), // empurra o botão para baixo
                       // Botão “VER OFERTAS”
-                      ElevatedButton(
-                        onPressed: () => Get.toNamed(banner.buttonAction),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.bannerButtonBg,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: AppSizes.buttonPaddingVertical,
-                            horizontal: AppSizes.buttonPaddingHorizontal,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              AppSizes.buttonRadius,
+                      Container(
+                        height: 35,
+                        margin: EdgeInsets.only(top: 5),
+                        child: ElevatedButton(
+                          onPressed: () => Get.toNamed(banner.buttonAction),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.bannerButtonBg,
+                            padding: const EdgeInsets.symmetric(
+                              // vertical: AppSizes.buttonPaddingVertical,
+                              horizontal: AppSizes.buttonPaddingHorizontal,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                AppSizes.buttonRadius,
+                              ),
                             ),
                           ),
-                        ),
-                        child: Text(
-                          banner.buttonText,
-                          style: AppTextStyles.bannerButton,
+                          child: Text(
+                            banner.buttonText,
+                            style: AppTextStyles.bannerButton,
+                          ),
                         ),
                       ),
                     ],

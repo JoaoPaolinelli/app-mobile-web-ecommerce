@@ -33,10 +33,18 @@ class PhoneNumberPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true, // permite o body subir
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
+        child: SingleChildScrollView(
+          // ajusta o padding inferior conforme o teclado
+          padding: EdgeInsets.only(
+            left: 28,
+            right: 28,
+            top: 52,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+          ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 52),
               SizedBox(
@@ -60,9 +68,10 @@ class PhoneNumberPage extends StatelessWidget {
                 height: 52,
                 child: PrimaryButton(
                   text: 'Continuar',
-                  onPressed: () => {Get.toNamed(AppRoutes.payment)},
+                  onPressed: () => Get.toNamed(AppRoutes.payment),
                 ),
               ),
+              const SizedBox(height: 20), // espaço extra ao final
             ],
           ),
         ),

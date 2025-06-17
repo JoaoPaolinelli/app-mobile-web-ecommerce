@@ -1,43 +1,39 @@
 // lib/presentation/controllers/notification_controller.dart
+import 'package:app_ecommerce/models/notification_item.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/animation.dart';
+import '../widgets/notification_panel.dart';
 
-class NotificationController extends GetxController
-    with SingleGetTickerProviderMixin {
-  late final AnimationController anim;
+class NotificationController extends GetxController {
+  final notifications = <NotificationItem>[].obs;
   var isRinging = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    anim = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
+  void ring() => isRinging.value = true;
+  void acknowledge() => isRinging.value = false;
+
+  // lib/presentation/controllers/notification_controller.dart
+
+  void openNotifications() {
+    ring(); // opcional: dispara ring antes de abrir
+    showGeneralDialog(
+      context: Get.overlayContext!,
+      barrierDismissible: true,
+      barrierLabel: 'Notificações',
+      barrierColor: Colors.black26, // leve escurecimento atrás do blur
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (_, __, ___) => const NotificationPanel(),
+      transitionBuilder: (_, animation, __, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutBack,
+            ),
+            child: child,
+          ),
+        );
+      },
     );
-  }
-
-  /// Começa a tocar a animação em loop
-  void ring() {
-    // se já estiver tocando, não faz nada
-    if (isRinging.value) return;
-
-    isRinging.value = true;
-    anim
-      ..reset()
-      ..repeat(reverse: true);
-  }
-
-  /// Deve ser chamado quando o usuário clicar no sino
-  void acknowledge() {
-    if (!isRinging.value) return;
-
-    anim.stop();
-    isRinging.value = false;
-  }
-
-  @override
-  void onClose() {
-    anim.dispose();
-    super.onClose();
   }
 }

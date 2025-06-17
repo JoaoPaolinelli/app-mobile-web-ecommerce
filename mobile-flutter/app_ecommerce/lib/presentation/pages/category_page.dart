@@ -1,4 +1,5 @@
 // lib/presentation/pages/category_page.dart
+import 'package:app_ecommerce/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -102,7 +103,7 @@ class CategoryPage extends StatelessWidget {
                         stripeColor: item.stripeColor,
                         onTap:
                             () => Get.toNamed(
-                              '/category_products?category=${Uri.encodeComponent(item.category)}',
+                              '${AppRoutes.categoryProduct}?category=${Uri.encodeComponent(item.category)}',
                             ),
                       ),
                     );
