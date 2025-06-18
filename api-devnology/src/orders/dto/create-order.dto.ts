@@ -1,17 +1,13 @@
+import { IsString, ValidateNested, ArrayMinSize } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IsString, IsNotEmpty, IsOptional, IsNumber, Min } from 'class-validator';
+import { OrderItemDto } from './order-item.dto';
 
 export class CreateOrderDto {
-  @IsString() @IsNotEmpty()
-  productId: string;
+  @ValidateNested({ each: true })
+  @Type(() => OrderItemDto)
+  @ArrayMinSize(1)
+  items: OrderItemDto[];
 
-  @Type(() => Number)      // ← garante que o valor seja convertido
-  @IsNumber() @Min(1)
-  quantity: number;
-
-  @IsString() @IsNotEmpty()
-  customerName: string;
-
-  @IsString() @IsOptional()
-  address?: string;
+  @IsString()
+  address?: string;  // novo campo opcional
 }

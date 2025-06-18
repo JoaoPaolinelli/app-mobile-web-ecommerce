@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_sizes.dart';
 import '../constants/app_text_styles.dart';
@@ -12,8 +13,8 @@ class AppTheme {
       colorScheme: ColorScheme.light(
         primary: AppColors.bannerButtonBg,
         secondary: AppColors.purchaseButton,
-        background: AppColors.background,
-        surface: AppColors.surface,
+        // background: AppColors.background,
+        surface: AppColors.background,
         onPrimary: AppColors.textPrimary,
         onSecondary: AppColors.textSecondary,
         error: AppColors.error,
@@ -30,6 +31,9 @@ class AppTheme {
 
       // AppBar
       appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: AppColors.background,
+        ),
         backgroundColor: AppColors.background,
         elevation: 0,
         iconTheme: IconThemeData(
@@ -74,7 +78,7 @@ class AppTheme {
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSizes.padding,
         ),
-        tileColor: AppColors.surface,
+        tileColor: AppColors.background,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.borderRadius / 2),
         ),

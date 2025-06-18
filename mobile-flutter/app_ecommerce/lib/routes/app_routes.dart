@@ -2,6 +2,7 @@ import 'package:app_ecommerce/presentation/pages/cart_page.dart';
 import 'package:app_ecommerce/presentation/pages/category_page.dart';
 import 'package:app_ecommerce/presentation/pages/category_product_page.dart';
 import 'package:app_ecommerce/presentation/pages/confirm_payment_page.dart';
+import 'package:app_ecommerce/presentation/pages/history_page.dart';
 import 'package:app_ecommerce/presentation/pages/payment_page.dart';
 import 'package:app_ecommerce/presentation/pages/phone_number_page.dart';
 import 'package:app_ecommerce/presentation/pages/profile_page.dart';
@@ -19,6 +20,7 @@ abstract class AppRoutes {
   static const String category = '/category';
   static const String search = '/search';
   static const String profile = '/profile';
+  static const String historyPurchase = '/profile/orders';
   static const String cart = '/cart';
   static const String phoneNumber = '/phone';
   static const String payment = '/payment';
@@ -31,6 +33,7 @@ abstract class AppRoutes {
     GetPage(name: category, page: () => CategoryPage()),
     GetPage(name: AppRoutes.search, page: () => SearchPage()),
     GetPage(name: AppRoutes.profile, page: () => ProfilePage()),
+    GetPage(name: AppRoutes.historyPurchase, page: () => HistoryPage()),
     GetPage(name: AppRoutes.cart, page: () => CartPage()),
     GetPage(name: AppRoutes.phoneNumber, page: () => PhoneNumberPage()),
     GetPage(name: AppRoutes.payment, page: () => PagamentoPage()),

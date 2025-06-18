@@ -36,16 +36,16 @@ class CategoryPage extends StatelessWidget {
     'Incredible': FontAwesomeIcons.rocket,
     'Awesome': FontAwesomeIcons.thumbsUp,
     'Tasty': FontAwesomeIcons.utensils,
-    'Handcrafted': FontAwesomeIcons.tools,
-    'Roupas': FontAwesomeIcons.tshirt,
+    'Handcrafted': FontAwesomeIcons.screwdriverWrench,
+    'Roupas': FontAwesomeIcons.shirt,
     'Elegant': FontAwesomeIcons.crown,
     'Oriental': FontAwesomeIcons.pagelines,
     'Electronic': FontAwesomeIcons.tv,
-    'Bespoke': FontAwesomeIcons.paintBrush,
+    'Bespoke': FontAwesomeIcons.paintbrush,
     'Recycled': FontAwesomeIcons.recycle,
     'Luxurious': FontAwesomeIcons.diamond,
-    'Modern': FontAwesomeIcons.mobileAlt,
-    'Fresh': FontAwesomeIcons.appleAlt,
+    'Modern': FontAwesomeIcons.mobileScreenButton,
+    'Fresh': FontAwesomeIcons.appleWhole,
   };
 
   @override
@@ -58,6 +58,8 @@ class CategoryPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+
         title: Text('Categorias', style: AppTextStyles.sectionTitle),
         centerTitle: true,
         backgroundColor: AppColors.background,

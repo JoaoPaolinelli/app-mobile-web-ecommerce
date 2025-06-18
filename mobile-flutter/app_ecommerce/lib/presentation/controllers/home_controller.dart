@@ -13,6 +13,7 @@ class HomeController extends GetxController {
   // Produtos
   var mostOrdered = <ProductModel>[].obs;
   var favorites = <ProductModel>[].obs;
+  var allProducts = <ProductModel>[].obs;
 
   // Loader
   var isLoading = true.obs;
@@ -35,6 +36,9 @@ class HomeController extends GetxController {
 
       final fav = await _api.fetchFavorites(limit: 10);
       favorites.assignAll(fav);
+
+      final allProducts = await _api.fetchAllProducts();
+      favorites.assignAll(allProducts);
     } catch (e) {
       Get.snackbar('Erro', e.toString());
     } finally {

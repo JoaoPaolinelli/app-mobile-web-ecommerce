@@ -33,7 +33,7 @@ class NotificationPanel extends StatelessWidget {
     final panelWidth = screen.width * 0.8;
     final panelHeight = screen.height * 0.5;
     final panelLeft = (screen.width - panelWidth) / 2 + 0;
-    final logoTop = (screen.height - panelHeight) / 2 - 22;
+    final logoTop = (screen.height - panelHeight) / 2 - 18;
 
     return Stack(
       children: [

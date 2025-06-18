@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:app_ecommerce/models/category_count_model.dart';
+import 'package:app_ecommerce/models/order.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/banner_model.dart';
@@ -58,7 +59,7 @@ class ApiService {
 
   BannerModel fetchBannerSync() {
     return BannerModel(
-      title: 'Dia dos namorados Devnology',
+      title: 'Dia dos namorados E-Buy',
       subtitle: 'Descontos de até 30%',
       buttonText: 'VER OFERTAS',
       buttonAction: '/products?promo=true',
@@ -125,5 +126,62 @@ class ApiService {
     return data
         .map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
         .toList();
+  }
+
+  // Future<List<Order>> fetchOrders() async {
+  //   final uri = Uri.parse('$_baseUrl/orders');
+  //   final res = await http.get(uri);
+  //   if (res.statusCode != 200 && res.statusCode != 201) {
+  //     throw Exception('Erro ao buscar pedidos');
+  //   }
+  //   final List data = json.decode(res.body);
+  //   return data.map((e) => Order.fromJson(e)).toList();
+  // }
+
+  // lib/services/order_service.dart
+  Future<List<Order>> fetchOrders() async {
+    final uri = Uri.parse('$_baseUrl/orders');
+    debugPrint('🔗 [fetchOrders] GET $uri');
+    final res = await http.get(uri);
+
+    // ←— DEBUG: imprime status e corpo
+    debugPrint('🔍 [fetchOrders] status: ${res.statusCode}');
+    debugPrint('🔍 [fetchOrders] body: ${res.body}');
+
+    if (res.statusCode != 200) {
+      throw Exception('Erro ao buscar pedidos: ${res.statusCode}');
+    }
+    final List data = json.decode(res.body);
+    return data.map((e) => Order.fromJson(e)).toList();
+  }
+
+  Future<Order> createOrder({
+    required List<OrderItem> items,
+    required String address,
+  }) async {
+    final uri = Uri.parse(_baseUrl);
+    final body = jsonEncode({
+      'items':
+          items
+              .map(
+                (i) => {
+                  'productId': i.productId,
+                  'productName': i.productName,
+                  'unitPrice': i.unitPrice,
+                  'quantity': i.quantity,
+                },
+              )
+              .toList(),
+      'address': address,
+    });
+    final res = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
+    if (res.statusCode != 200 && res.statusCode != 201) {
+      throw Exception('Falha ao criar pedido (${res.statusCode})');
+    }
+    return Order.fromJson(jsonDecode(res.body));
   }
 }

@@ -1,12 +1,13 @@
 import 'package:app_ecommerce/presentation/controllers/home_controller.dart';
-import 'package:app_ecommerce/presentation/widgets/profile_item_title.dart';
+import 'package:app_ecommerce/presentation/widgets/order_page/profile_item_animation.dart';
+import 'package:app_ecommerce/presentation/widgets/profile_page/profile_item_title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../widgets/app_nav_bar.dart';
-import '../widgets/profile_section_title.dart';
+import '../widgets/profile_page/profile_section_title.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -67,10 +68,25 @@ class ProfilePage extends StatelessWidget {
 
               // Seções
               const ProfileSectionTitle(title: "PEDIDOS"),
-              const ProfileItemTile(
-                icon: Icons.history,
-                label: "Historico de compras",
+
+              // Agora o Histórico com animação + mesma aparência:
+              GestureDetector(
+                onTap: () => Get.toNamed('/profile/orders'),
+                child: const ProfileItemTile(
+                  icon: Icons.history,
+                  label: "Histórico de compras",
+                ),
               ),
+              // const ProfileItemTile(
+              //   icon: Icons.history,
+              //   label: "Histórico de compras",
+              // ),
+
+              // AnimatedProfileItemTile(
+              //   icon: Icons.history,
+              //   label: "Histórico de compras",
+              //   routeName: '/profile/orders', // ajuste pra sua rota
+              // ),
               const ProfileItemTile(
                 icon: Icons.mic,
                 label: "Registre um problema",

@@ -1,3 +1,4 @@
+import 'package:app_ecommerce/core/constants/app_text_styles.dart';
 import 'package:app_ecommerce/models/product_model.dart';
 import 'package:app_ecommerce/presentation/pages/product_list_page.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:get/get.dart';
 
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_text_styles.dart';
 import '../../presentation/widgets/app_nav_bar.dart';
 import '../widgets/home_page/product_card.dart';
 import '../widgets/home_page/section_header.dart';
@@ -26,13 +26,12 @@ class SearchPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final all = sc.allProducts;
-
           return ListView(
             padding: const EdgeInsets.only(bottom: 24),
             children: [
               const SizedBox(height: AppSizes.padding),
 
+              // 🔍 Campo de busca
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSizes.padding,
@@ -56,66 +55,107 @@ class SearchPage extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // Seções horizontais
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.padding,
-                ),
-                child: SectionHeader(
-                  title: 'Dia dos namorados no E-Buy',
-                  onTap: () {
-                    Get.to(
-                      () => GenericListingPage<ProductModel>(
-                        title: 'Dia dos namorados no E-Buy',
-                        items: hc.mostOrdered,
-                        itemBuilder: (p) => ProductCard(product: p),
+              // 🔁 Condicional: mostrando resultados filtrados ou seções padrão
+              if (sc.searchActive.value)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSizes.padding,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Resultados da busca:',
+                        style: AppTextStyles.sectionTitle,
                       ),
-                    );
-                  },
-                ),
-              ),
-              _buildHorizontalList(all),
+                      const SizedBox(height: 16),
 
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.padding,
-                ),
-                child: // Seção Produtos com desconto.
-                    SectionHeader(
-                  title: 'Produtos com Desconto',
-                  onTap: () {
-                    Get.to(
-                      () => GenericListingPage<ProductModel>(
-                        title: 'Produtos com Desconto',
-                        items: hc.mostOrdered,
-                        itemBuilder: (p) => ProductCard(product: p),
+                      // GridView dentro de SizedBox para scroll vertical
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: sc.results.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16,
+                              childAspectRatio: 0.65,
+                            ),
+                        itemBuilder:
+                            (ctx, i) => ProductCard(product: sc.results[i]),
                       ),
-                    );
-                  },
+                    ],
+                  ),
+                )
+              else ...[
+                // 🩷 Sessão: Dia dos Namorados
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SectionHeader(
+                    title: 'Dia dos namorados no E-Buy',
+                    onTap: () {
+                      Get.to(
+                        () => GenericListingPage<ProductModel>(
+                          title: 'Dia dos namorados no E-Buy',
+                          items: hc.mostOrdered,
+                          itemBuilder: (p) => ProductCard(product: p),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              _buildHorizontalList(all.where((p) => p.hasDiscount).toList()),
+                const SizedBox(height: AppSizes.sm),
+                _buildHorizontalList(sc.allProducts),
 
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.padding,
+                const SizedBox(height: 24),
+
+                // 💸 Sessão: Produtos com Desconto
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSizes.padding,
+                  ),
+                  child: SectionHeader(
+                    title: 'Produtos com Desconto',
+                    onTap: () {
+                      Get.to(
+                        () => GenericListingPage<ProductModel>(
+                          title: 'Produtos com Desconto',
+                          items: hc.mostOrdered,
+                          itemBuilder: (p) => ProductCard(product: p),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-                child: SectionHeader(
-                  title: 'Saúde e Fit',
-                  onTap: () {
-                    Get.to(
-                      () => GenericListingPage<ProductModel>(
-                        title: 'Saúde e Fit',
-                        items: hc.mostOrdered,
-                        itemBuilder: (p) => ProductCard(product: p),
-                      ),
-                    );
-                  },
+                const SizedBox(height: AppSizes.sm),
+                _buildHorizontalList(
+                  sc.allProducts.where((p) => p.hasDiscount).toList(),
                 ),
-              ),
-              _buildHorizontalList(all),
+
+                const SizedBox(height: 24),
+
+                // 🏋️ Sessão: Saúde e Fit
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSizes.padding,
+                  ),
+                  child: SectionHeader(
+                    title: 'Saúde e Fit',
+                    onTap: () {
+                      Get.to(
+                        () => GenericListingPage<ProductModel>(
+                          title: 'Saúde e Fit',
+                          items: hc.mostOrdered,
+                          itemBuilder: (p) => ProductCard(product: p),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: AppSizes.sm),
+                _buildHorizontalList(sc.allProducts),
+              ],
             ],
           );
         }),
@@ -125,12 +165,12 @@ class SearchPage extends StatelessWidget {
   }
 
   /// 🔄 Lista horizontal com ProductCard
-  Widget _buildHorizontalList(List products) {
+  Widget _buildHorizontalList(List<ProductModel> products) {
     return SizedBox(
       height: 220,
       child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         itemCount: products.length,
         separatorBuilder: (_, __) => const SizedBox(width: 16),
         itemBuilder: (ctx, i) => ProductCard(product: products[i]),

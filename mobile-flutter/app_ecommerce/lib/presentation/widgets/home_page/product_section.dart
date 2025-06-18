@@ -1,7 +1,6 @@
 // lib/presentation/widgets/home_page/product_section.dart
 import 'package:flutter/material.dart';
 import 'product_card.dart';
-import 'section_header.dart';
 import '../../../core/constants/app_sizes.dart';
 
 class ProductSection extends StatelessWidget {

@@ -46,7 +46,15 @@ class PhoneNumberPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 52),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  iconSize: 24,
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Get.back(),
+                ),
+              ),
+              const SizedBox(height: 8),
               SizedBox(
                 width: 271,
                 height: 271,

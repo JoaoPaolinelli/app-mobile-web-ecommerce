@@ -1,4 +1,3 @@
-// main_cart_page.dart
 import 'package:app_ecommerce/presentation/controllers/cart_controller.dart';
 import 'package:app_ecommerce/presentation/widgets/cart_page/cart_app_bar.dart';
 import 'package:app_ecommerce/presentation/widgets/cart_page/checkout_section.dart';
@@ -19,10 +18,45 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+
+      // ✅ Usa appBar do Scaffold para evitar mudança de cor
+      appBar: CartAppBar(onBack: Get.back, onClear: cart.clearCart),
+
+      // appBar: PreferredSize(
+      //   preferredSize: const Size.fromHeight(56),
+      //   child: Padding(
+      //     padding: const EdgeInsets.symmetric(horizontal: 8),
+      //     child: SafeArea(
+      //       child: Row(
+      //         children: [
+      //           IconButton(
+      //             icon: const Icon(Icons.arrow_back, color: Colors.black),
+      //             onPressed: () => Get.back(),
+      //           ),
+      //           const Expanded(
+      //             child: Text(
+      //               'Sacola',
+      //               textAlign: TextAlign.center,
+      //               style: TextStyle(
+      //                 fontSize: 20,
+      //                 fontWeight: FontWeight.w500,
+      //                 letterSpacing: 0,
+      //                 color: Color(0xFF060606),
+      //               ),
+      //             ),
+      //           ),
+      //           IconButton(
+      //             icon: const Icon(Icons.delete_outline, color: Colors.black),
+      //             onPressed: cart.clearCart,
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
       body: SafeArea(
         child: Column(
           children: [
-            CartAppBar(onBack: Get.back, onClear: cart.clearCart),
             const SizedBox(height: AppSizes.sm),
             const DeliveryInfoCard(),
             const SizedBox(height: AppSizes.lg),

@@ -1,3 +1,4 @@
+import 'package:app_ecommerce/core/constants/app_colors.dart';
 import 'package:app_ecommerce/presentation/controllers/payment_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -128,11 +129,21 @@ class EntregaWidget extends StatelessWidget {
             child: const Text('Cancelar'),
           ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.purchaseButton,
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
             onPressed: () {
               onSave(controller.text);
               Get.back();
             },
-            child: const Text('Salvar'),
+            child: const Text(
+              'Salvar',
+              style: TextStyle(color: AppColors.background, fontSize: 12),
+            ),
           ),
         ],
       ),

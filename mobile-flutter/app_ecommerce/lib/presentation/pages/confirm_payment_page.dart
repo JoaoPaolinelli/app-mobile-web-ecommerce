@@ -4,7 +4,6 @@ import 'package:app_ecommerce/presentation/controllers/notification_controller.d
 import 'package:app_ecommerce/presentation/controllers/payment_controller.dart';
 import 'package:app_ecommerce/presentation/widgets/confirmacao_pedido/complemento.dart';
 import 'package:app_ecommerce/presentation/widgets/confirmacao_pedido/info_tile.dart';
-import 'package:app_ecommerce/presentation/widgets/confirmacao_pedido/total_pagar.dart';
 import 'package:app_ecommerce/presentation/widgets/payment_page/full_price_widget.dart';
 import 'package:app_ecommerce/presentation/widgets/phone_number_page/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -22,19 +21,22 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Obx(
             () => ListView(
               children: [
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Confirmação do pedido',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: const Text(
+                        'Confirmação do pedido',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     IconButton(
@@ -43,60 +45,77 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
-
-                InfoTile(
-                  icon: Icons.location_on,
-                  title: 'Endereço de entrega',
-                  subtitle: paymentController.endereco.value,
-                ),
-                Divider(),
-
-                InfoTile(
-                  icon: Icons.date_range,
-                  title: 'Data da entrega',
-                  subtitle: 'Entre os dias 12/06 e 20/06',
-                ),
-                Divider(),
-
-                InfoTile(
-                  icon: Icons.payment,
-                  title: 'Pagamento',
-                  subtitle: paymentController.metodoPagamento.value,
-                  iconColor: Colors.green,
-                ),
-                Divider(),
-
-                const InfoTile(
-                  icon: Icons.card_giftcard,
-                  title: 'Cupom',
-                  subtitle: 'Nenhum código promocional em uso',
-                ),
-                Divider(),
-
-                const InfoTile(
-                  icon: Icons.delivery_dining,
-                  title: 'Frete',
-                  subtitle: 'Nenhuma entrega gratuita em uso',
-                ),
-                Divider(),
-
                 const SizedBox(height: 16),
+
+                // Agrupamento visual elegante
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Column(
+                      children: [
+                        InfoTile(
+                          icon: Icons.location_on,
+                          title: 'Endereço de entrega',
+                          subtitle: paymentController.endereco.value,
+                        ),
+                        _divider(),
+                        InfoTile(
+                          icon: Icons.date_range,
+                          title: 'Data da entrega',
+                          subtitle: 'Entre os dias 12/06 e 20/06',
+                        ),
+                        _divider(),
+                        InfoTile(
+                          icon: Icons.payment,
+                          title: 'Pagamento',
+                          subtitle: paymentController.metodoPagamento.value,
+                          iconColor: AppColors.bannerButtonBg,
+                        ),
+                        _divider(),
+                        const InfoTile(
+                          icon: Icons.card_giftcard,
+                          title: 'Cupom',
+                          subtitle: 'Nenhum código promocional em uso',
+                        ),
+                        _divider(),
+                        const InfoTile(
+                          icon: Icons.delivery_dining,
+                          title: 'Frete',
+                          subtitle: 'Nenhuma entrega gratuita em uso',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
                 const ComplementoInput(),
                 const SizedBox(height: 24),
-                TotalPagarWidget(),
-                const SizedBox(height: 32),
+                const TotalPagarWidget(),
+                const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
-                  height: 58,
+                  height: 50,
                   child: PrimaryButton(
                     text: 'Confirmar pedido',
                     onPressed: () async {
                       confirmacaoController.confirmarPedidoSimulado();
-                      Get.find<NotificationController>().ring();
+                      final nc = Get.find<NotificationController>();
+                      nc.ring();
                       await Future.delayed(const Duration(milliseconds: 100));
-                      final bc = Get.find<NotificationController>();
-                      bc.ring();
+                      nc.ring();
                     },
                   ),
                 ),
@@ -108,14 +127,15 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
       ),
     );
   }
-}
 
-double calcularTotal(List<dynamic> produtos) {
-  double total = 0.0;
-  for (var produto in produtos) {
-    final preco = double.tryParse(produto['price'].toString()) ?? 0.0;
-    final quantidade = produto['quantidade'] ?? 1;
-    total += preco * quantidade;
-  }
-  return total;
+  Widget _divider() => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Divider(
+      color: Colors.grey.shade300,
+      thickness: 1,
+      height: 1,
+      indent: 0,
+      endIndent: 0,
+    ),
+  );
 }

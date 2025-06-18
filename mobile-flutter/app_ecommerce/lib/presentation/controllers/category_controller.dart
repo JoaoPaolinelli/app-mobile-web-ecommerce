@@ -44,7 +44,7 @@ class CategoryController extends GetxController {
       categories.assignAll(list);
 
       if (list.isNotEmpty) {
-        final first = list.first;
+        // final first = list.first;
         dynamicHighlight.value = HighlightModel(
           category: "Dia dos namorados",
           // monte o nome do asset conforme seu padrão:

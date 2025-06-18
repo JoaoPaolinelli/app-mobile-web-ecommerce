@@ -83,7 +83,7 @@ class ProductCard extends StatelessWidget {
                         final idx = cartController.cartItems.indexWhere(
                           (i) =>
                               i.title == product.name &&
-                              i.description == (product.description ?? ''),
+                              i.description == (product.description),
                         );
                         if (idx >= 0) {
                           final qty = cartController.cartItems[idx].quantity;
@@ -151,7 +151,7 @@ class ProductCard extends StatelessWidget {
                                   product.name,
                                 ),
                                 title: product.name,
-                                description: product.description ?? '',
+                                description: product.description,
                                 price: product.price.toDouble(),
                               ),
                             );

@@ -38,9 +38,25 @@ class SearchControllers extends GetxController {
   }
 
   /// Filtra localmente os produtos
+  // void search(String query) {
+  //   if (query.isEmpty) {
+  //     results.clear(); // ou use allProducts para mostrar tudo
+  //     return;
+  //   }
+
+  //   results.value =
+  //       allProducts
+  //           .where((p) => p.name.toLowerCase().contains(query.toLowerCase()))
+  //           .toList();
+  // }
+
+  final searchActive = false.obs;
+
   void search(String query) {
+    searchActive.value = query.isNotEmpty;
+
     if (query.isEmpty) {
-      results.clear(); // ou use allProducts para mostrar tudo
+      results.clear();
       return;
     }
 

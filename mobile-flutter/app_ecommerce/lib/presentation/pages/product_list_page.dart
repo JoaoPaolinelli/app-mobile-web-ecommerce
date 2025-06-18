@@ -1,8 +1,6 @@
 // lib/presentation/widgets/generic_listing_page.dart
 
-import 'package:app_ecommerce/presentation/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
@@ -29,7 +27,7 @@ class GenericListingPage<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Supondo que você sempre tenha o HomeController para a bottom nav:
-    final hc = Get.find<HomeController>();
+    // final hc = Get.find<HomeController>();
 
     return Scaffold(
       backgroundColor: AppColors.background,
