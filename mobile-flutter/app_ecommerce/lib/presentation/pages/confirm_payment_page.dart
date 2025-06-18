@@ -1,6 +1,8 @@
+// lib/presentation/pages/confirmacao_pedido_page.dart
 import 'package:app_ecommerce/core/constants/app_colors.dart';
 import 'package:app_ecommerce/presentation/controllers/confirmar_pagamento_controller.dart';
 import 'package:app_ecommerce/presentation/controllers/notification_controller.dart';
+import 'package:app_ecommerce/presentation/controllers/order_controller.dart';
 import 'package:app_ecommerce/presentation/controllers/payment_controller.dart';
 import 'package:app_ecommerce/presentation/widgets/confirmacao_pedido/complemento.dart';
 import 'package:app_ecommerce/presentation/widgets/confirmacao_pedido/info_tile.dart';
@@ -15,7 +17,8 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paymentController = Get.find<PaymentController>();
-    final confirmacaoController = Get.put(ConfirmacaoController());
+    final confirmController = Get.put(ConfirmacaoPedidoController());
+    final notificationCtrl = Get.find<NotificationController>();
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -29,9 +32,9 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: const Text(
+                    const Padding(
+                      padding: EdgeInsets.only(left: 5),
+                      child: Text(
                         'Confirmação do pedido',
                         style: TextStyle(
                           fontSize: 20,
@@ -53,11 +56,11 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 6,
-                        offset: const Offset(0, 3),
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
@@ -101,24 +104,48 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 24),
-                const ComplementoInput(),
+
+                // ComplementoInput com parâmetros originais
+                ComplementoInput(
+                  initialComplement:
+                      confirmController.complementoController.text,
+                  initialInstructions:
+                      confirmController.instrucoesController.text,
+                  onComplementChanged:
+                      (val) =>
+                          confirmController.complementoController.text = val,
+                  onInstructionsChanged:
+                      (val) =>
+                          confirmController.instrucoesController.text = val,
+                ),
+
                 const SizedBox(height: 24),
                 const TotalPagarWidget(),
                 const SizedBox(height: 24),
+
+                // Botão de confirmar, bloqueado quando loading
                 SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: PrimaryButton(
-                    text: 'Confirmar pedido',
-                    onPressed: () async {
-                      confirmacaoController.confirmarPedidoSimulado();
-                      final nc = Get.find<NotificationController>();
-                      nc.ring();
-                      await Future.delayed(const Duration(milliseconds: 100));
-                      nc.ring();
+                    text:
+                        confirmController.isLoading.value
+                            ? 'Enviando...'
+                            : 'Confirmar pedido',
+                    onPressed: () {
+                      if (confirmController.isLoading.value) return;
+                      confirmController.confirmarPedido().then((_) {
+                        // disparar notificações
+                        notificationCtrl.ring();
+                        Get.find<OrderController>().fetchHistory();
+                        Future.delayed(const Duration(milliseconds: 1000), () {
+                          notificationCtrl.ring();
+                        });
+                      });
                     },
                   ),
                 ),
+
                 const SizedBox(height: 32),
               ],
             ),
@@ -130,12 +157,6 @@ class ConfirmacaoPedidoPage extends StatelessWidget {
 
   Widget _divider() => Padding(
     padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Divider(
-      color: Colors.grey.shade300,
-      thickness: 1,
-      height: 1,
-      indent: 0,
-      endIndent: 0,
-    ),
+    child: Divider(color: Colors.grey.shade300, thickness: 1, height: 1),
   );
 }

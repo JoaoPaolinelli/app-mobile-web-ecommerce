@@ -24,6 +24,26 @@ class ApiService {
     }
   }
 
+  /// Busca apenas produtos com desconto
+  Future<List<ProductModel>> fetchDiscounted({int limit = 0}) async {
+    final uri = Uri.parse('$_baseUrl/products/discounted');
+    final res = await http.get(uri);
+    if (res.statusCode != 200) {
+      throw Exception(
+        'Erro ao carregar produtos com desconto (${res.statusCode})',
+      );
+    }
+    final List<dynamic> data = json.decode(res.body) as List<dynamic>;
+    var list =
+        data
+            .map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+    if (limit > 0 && list.length > limit) {
+      list = list.take(limit).toList();
+    }
+    return list;
+  }
+
   Future<List<ProductModel>> fetchMostOrdered({int limit = 3}) async {
     final uri = Uri.parse('$_baseUrl/home/most-ordered');
     final response = await http.get(uri);
@@ -142,8 +162,11 @@ class ApiService {
   Future<List<Order>> fetchOrders() async {
     final uri = Uri.parse('$_baseUrl/orders');
     debugPrint('🔗 [fetchOrders] GET $uri');
-    final res = await http.get(uri);
 
+    final res = await http.get(uri);
+    // final res = await http.get(uri);
+    debugPrint("\n\n\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\n");
+    debugPrint('🔍 [fetchOrders] body: ${res.body}');
     // ←— DEBUG: imprime status e corpo
     debugPrint('🔍 [fetchOrders] status: ${res.statusCode}');
     debugPrint('🔍 [fetchOrders] body: ${res.body}');

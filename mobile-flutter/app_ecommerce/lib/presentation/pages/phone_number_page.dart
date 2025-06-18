@@ -1,5 +1,6 @@
 // lib/presentation/pages/phone_number_page.dart
 import 'package:app_ecommerce/presentation/controllers/phone_number_controller.dart';
+import 'package:app_ecommerce/presentation/controllers/user_controller.dart';
 import 'package:app_ecommerce/presentation/widgets/phone_number_page/country_selector.dart';
 import 'package:app_ecommerce/presentation/widgets/phone_number_page/phone_input_field.dart';
 import 'package:app_ecommerce/presentation/widgets/phone_number_page/primary_button.dart';
@@ -12,7 +13,8 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class PhoneNumberPage extends StatelessWidget {
   PhoneNumberPage({super.key});
 
-  final controller = Get.put(PhoneNumberController());
+  final phoneCtrl = Get.put(PhoneNumberController());
+  final userCtrl = Get.find<UserController>();
 
   final maskFormatter = MaskTextInputFormatter(
     mask: '(##) # ####-####',
@@ -33,10 +35,9 @@ class PhoneNumberPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, // permite o body subir
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
-          // ajusta o padding inferior conforme o teclado
           padding: EdgeInsets.only(
             left: 28,
             right: 28,
@@ -66,9 +67,7 @@ class PhoneNumberPage extends StatelessWidget {
               PhoneInputField(
                 selectedCountry: selectedCountry,
                 maskFormatter: maskFormatter,
-                onChanged:
-                    (numeroCompleto) =>
-                        controller.onPhoneChanged(numeroCompleto),
+                onChanged: phoneCtrl.onPhoneChanged,
               ),
               const SizedBox(height: 40),
               SizedBox(
@@ -76,10 +75,20 @@ class PhoneNumberPage extends StatelessWidget {
                 height: 52,
                 child: PrimaryButton(
                   text: 'Continuar',
-                  onPressed: () => Get.toNamed(AppRoutes.payment),
+                  onPressed: () {
+                    final numero = phoneCtrl.phone.value;
+                    if (numero.isEmpty || numero.length < 10) {
+                      Get.snackbar('Erro', 'Digite um número válido');
+                      return;
+                    }
+                    // Atualiza o UserController
+                    userCtrl.updatePhone(numero);
+                    // Navega para a próxima tela
+                    Get.toNamed(AppRoutes.payment);
+                  },
                 ),
               ),
-              const SizedBox(height: 20), // espaço extra ao final
+              const SizedBox(height: 20),
             ],
           ),
         ),

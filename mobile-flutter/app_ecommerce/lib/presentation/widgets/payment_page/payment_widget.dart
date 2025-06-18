@@ -1,5 +1,6 @@
 // lib/presentation/widgets/payment_page/payment_widget.dart
 import 'package:app_ecommerce/presentation/controllers/payment_controller.dart';
+import 'package:app_ecommerce/presentation/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,7 +9,8 @@ class PagamentoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<PaymentController>();
+    final paymentCtrl = Get.find<PaymentController>();
+    final userCtrl = Get.find<UserController>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +29,7 @@ class PagamentoWidget extends StatelessWidget {
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.payments, size: 20),
             title: Text(
-              controller.metodoPagamento.value,
+              paymentCtrl.metodoPagamento.value,
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
@@ -36,7 +38,8 @@ class PagamentoWidget extends StatelessWidget {
             ),
             trailing: IconButton(
               icon: const Icon(Icons.chevron_right),
-              onPressed: () => _mostrarOpcoesPagamento(context, controller),
+              onPressed:
+                  () => _mostrarOpcoesPagamento(context, paymentCtrl, userCtrl),
             ),
           ),
         ),
@@ -47,7 +50,8 @@ class PagamentoWidget extends StatelessWidget {
 
   void _mostrarOpcoesPagamento(
     BuildContext context,
-    PaymentController controller,
+    PaymentController paymentCtrl,
+    UserController userCtrl,
   ) {
     showModalBottomSheet(
       context: context,
@@ -58,21 +62,25 @@ class PagamentoWidget extends StatelessWidget {
               ListTile(
                 title: const Text("PIX"),
                 onTap: () {
-                  controller.salvarMetodoPagamento("PIX");
+                  paymentCtrl.salvarMetodoPagamento("PIX");
+                  userCtrl.updatePaymentMethod("PIX");
                   Get.back();
                 },
               ),
               ListTile(
                 title: const Text("Cartão de Crédito"),
                 onTap: () {
-                  controller.salvarMetodoPagamento("Cartão de Crédito");
+                  paymentCtrl.salvarMetodoPagamento("CREDIT_CARD");
+                  userCtrl.updatePaymentMethod("CREDIT_CARD");
+
                   Get.back();
                 },
               ),
               ListTile(
                 title: const Text("Boleto Bancário"),
                 onTap: () {
-                  controller.salvarMetodoPagamento("Boleto Bancário");
+                  paymentCtrl.salvarMetodoPagamento("BOLETO");
+                  userCtrl.updatePaymentMethod("BOLETO");
                   Get.back();
                 },
               ),

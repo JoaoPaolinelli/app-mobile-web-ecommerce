@@ -1,30 +1,32 @@
-// lib/controllers/order_controller.dart
+// lib/presentation/controllers/order_controller.dart
 import 'package:app_ecommerce/data/api_service.dart';
-import 'package:app_ecommerce/models/order.dart';
 import 'package:get/get.dart';
 
+import '../../models/order.dart';
+
 class OrderController extends GetxController {
-  final _service = ApiService();
-  var orders = <Order>[].obs;
-  var isLoading = false.obs;
-  var error = ''.obs;
+  final orders = <Order>[].obs;
+  final isLoading = true.obs;
+  final error = ''.obs;
+  final ApiService _api = ApiService();
 
   @override
   void onInit() {
     super.onInit();
-    loadOrders();
+    fetchHistory();
   }
 
-  Future<void> loadOrders() async {
+  Future<void> fetchHistory() async {
     try {
-      isLoading(true);
-      error('');
-      final list = await _service.fetchOrders();
-      orders.assignAll(list);
+      isLoading.value = true;
+      error.value = '';
+      final resList = await _api.fetchOrders();
+      // fetchOrdersByUser já retorna List<Order>
+      orders.assignAll(resList);
     } catch (e) {
-      error(e.toString());
+      error.value = e.toString();
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 }

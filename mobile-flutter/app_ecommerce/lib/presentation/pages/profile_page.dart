@@ -1,5 +1,4 @@
 import 'package:app_ecommerce/presentation/controllers/home_controller.dart';
-import 'package:app_ecommerce/presentation/widgets/order_page/profile_item_animation.dart';
 import 'package:app_ecommerce/presentation/widgets/profile_page/profile_item_title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

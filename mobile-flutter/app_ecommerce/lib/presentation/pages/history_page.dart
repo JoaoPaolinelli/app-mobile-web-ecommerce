@@ -1,22 +1,21 @@
 // lib/pages/history_page.dart
 import 'package:app_ecommerce/presentation/controllers/order_controller.dart';
-import 'package:app_ecommerce/presentation/widgets/app_nav_bar.dart';
 import 'package:app_ecommerce/presentation/widgets/order_page/order_card.dart';
 import 'package:app_ecommerce/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HistoryPage extends StatelessWidget {
-  const HistoryPage({super.key});
+  HistoryPage({super.key});
+  final ctrl = Get.find<OrderController>();
 
   @override
   Widget build(BuildContext context) {
     // Garantir que o controller seja criado aqui e onInit() seja executado
-    final ctrl = Get.put(OrderController());
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      bottomNavigationBar: const AppBottomNav(),
+      // bottomNavigationBar: const AppBottomNav(),
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,

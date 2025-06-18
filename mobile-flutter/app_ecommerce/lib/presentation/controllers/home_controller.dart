@@ -14,7 +14,7 @@ class HomeController extends GetxController {
   var mostOrdered = <ProductModel>[].obs;
   var favorites = <ProductModel>[].obs;
   var allProducts = <ProductModel>[].obs;
-
+  var discounted = <ProductModel>[].obs;
   // Loader
   var isLoading = true.obs;
 
@@ -39,6 +39,10 @@ class HomeController extends GetxController {
 
       final allProducts = await _api.fetchAllProducts();
       favorites.assignAll(allProducts);
+
+      // ← Carrega produtos com desconto (por exemplo, limit 10)
+      final disc = await _api.fetchDiscounted();
+      discounted.assignAll(disc);
     } catch (e) {
       Get.snackbar('Erro', e.toString());
     } finally {

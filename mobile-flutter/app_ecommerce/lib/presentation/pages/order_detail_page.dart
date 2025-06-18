@@ -96,9 +96,27 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildField('Usuário', order.userName),
-                      _buildField('Email', order.userEmail),
-                      _buildField('Endereço', order.address ?? '—'),
+                      // _buildField('Usuário', order.userName),
+                      // _buildField('Email', order.userEmail),
+                      // _buildField('Endereço', order.address ?? '—'),
+                      _buildField('Telefone', order.user.phoneNumber),
+                      _buildField('Identificação', order.user.identification),
+                      _buildField('Endereço', order.user.deliveryAddress),
+                      if (order.user.addressComplement != null)
+                        _buildField(
+                          'Complemento',
+                          order.user.addressComplement!,
+                        ),
+                      if (order.user.deliveryInstructions != null)
+                        _buildField(
+                          'Instruções',
+                          order.user.deliveryInstructions!,
+                        ),
+                      _buildField(
+                        'Método de pagamento',
+                        order.user.paymentMethod,
+                      ),
+
                       _buildField(
                         'Data do pedido',
                         _formatDate(order.orderDate),

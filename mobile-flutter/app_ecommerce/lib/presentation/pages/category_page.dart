@@ -1,4 +1,7 @@
 // lib/presentation/pages/category_page.dart
+import 'package:app_ecommerce/models/product_model.dart';
+import 'package:app_ecommerce/presentation/pages/product_list_page.dart';
+import 'package:app_ecommerce/presentation/widgets/home_page/product_card.dart';
 import 'package:app_ecommerce/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -95,6 +98,22 @@ class CategoryPage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: highlights.length,
                   separatorBuilder: (_, __) => SizedBox(width: gap),
+
+                  // itemBuilder: (ctx, i) {
+                  //   final item = highlights[i];
+                  //   return SizedBox(
+                  //     width: itemWidth,
+                  //     child: HighlightCard(
+                  //       title: item.category,
+                  //       imageAsset: item.imageAsset,
+                  //       stripeColor: item.stripeColor,
+                  //       onTap:
+                  //           () => Get.toNamed(
+                  //             '${AppRoutes.categoryProduct}?category=${Uri.encodeComponent(item.category)}',
+                  //           ),
+                  //     ),
+                  //   );
+                  // },
                   itemBuilder: (ctx, i) {
                     final item = highlights[i];
                     return SizedBox(
@@ -103,10 +122,24 @@ class CategoryPage extends StatelessWidget {
                         title: item.category,
                         imageAsset: item.imageAsset,
                         stripeColor: item.stripeColor,
-                        onTap:
-                            () => Get.toNamed(
+                        onTap: () {
+                          // Se for a categoria "Promoções", leva à lista de descontos
+                          if (item.category == 'Promoções') {
+                            final hc = Get.find<HomeController>();
+                            Get.to(
+                              () => GenericListingPage<ProductModel>(
+                                title: 'Produtos com Desconto',
+                                items: hc.discounted,
+                                itemBuilder: (p) => ProductCard(product: p),
+                              ),
+                            );
+                          } else {
+                            // Comportamento normal
+                            Get.toNamed(
                               '${AppRoutes.categoryProduct}?category=${Uri.encodeComponent(item.category)}',
-                            ),
+                            );
+                          }
+                        },
                       ),
                     );
                   },

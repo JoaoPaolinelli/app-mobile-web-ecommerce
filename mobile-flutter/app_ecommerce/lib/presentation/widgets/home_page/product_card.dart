@@ -40,7 +40,57 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 1) Imagem com proporção fixa
-            AspectRatio(aspectRatio: 1, child: imageWidget),
+            // AspectRatio(aspectRatio: 1, child: imageWidget),
+            // 1) Imagem com selo de desconto quando houver
+            AspectRatio(
+              aspectRatio: 1,
+              child: Stack(
+                children: [
+                  Positioned.fill(child: imageWidget),
+                  if (product.hasDiscount)
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: Builder(
+                        builder: (_) {
+                          final raw = product.discountValue;
+                          final percent =
+                              raw <= 1 ? (raw * 100).round() : raw.round();
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  size: 12,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(width: 2),
+                                Text(
+                                  '-$percent%',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                ],
+              ),
+            ),
 
             // 2) Conteúdo textual e botões
             Padding(

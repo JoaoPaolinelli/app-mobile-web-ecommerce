@@ -1,6 +1,11 @@
-import { IsString, ValidateNested, ArrayMinSize } from 'class-validator';
+// src/orders/dto/create-order.dto.ts
+import {
+  ValidateNested,
+  ArrayMinSize,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { OrderItemDto } from './order-item.dto';
+import { CreateUserInfoDto } from './create-user-info.dto';
 
 export class CreateOrderDto {
   @ValidateNested({ each: true })
@@ -8,6 +13,7 @@ export class CreateOrderDto {
   @ArrayMinSize(1)
   items: OrderItemDto[];
 
-  @IsString()
-  address?: string;  // novo campo opcional
+  @ValidateNested()
+  @Type(() => CreateUserInfoDto)
+  user: CreateUserInfoDto;
 }

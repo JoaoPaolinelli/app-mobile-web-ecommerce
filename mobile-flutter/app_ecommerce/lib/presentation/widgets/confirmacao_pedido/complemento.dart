@@ -1,16 +1,21 @@
+// lib/presentation/widgets/confirmacao_pedido/complemento.dart
 import 'package:app_ecommerce/presentation/controllers/confirmar_pagamento_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class ComplementoInput extends StatelessWidget {
-  final String initialValue;
-
-  const ComplementoInput({super.key, this.initialValue = '208'});
+  const ComplementoInput({
+    super.key,
+    required String initialComplement,
+    required String initialInstructions,
+    required Function(dynamic val) onComplementChanged,
+    required Function(dynamic val) onInstructionsChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final confirmacaoController = Get.put(ConfirmacaoController());
+    // Usa Get.find pois o controller já foi injetado na página
+    final confirmCtrl = Get.find<ConfirmacaoPedidoController>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,8 +26,11 @@ class ComplementoInput extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         TextFormField(
-          controller: confirmacaoController.complementoController,
-          decoration: const InputDecoration(border: UnderlineInputBorder()),
+          controller: confirmCtrl.complementoController,
+          decoration: const InputDecoration(
+            border: UnderlineInputBorder(),
+            hintText: 'Número, apartamento, bloco etc.',
+          ),
         ),
         const SizedBox(height: 16),
         const Text(
@@ -31,8 +39,11 @@ class ComplementoInput extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         TextFormField(
-          controller: confirmacaoController.instrucoesController,
-          decoration: const InputDecoration(hintText: 'Mensagem ao entregador'),
+          controller: confirmCtrl.instrucoesController,
+          decoration: const InputDecoration(
+            border: UnderlineInputBorder(),
+            hintText: 'Mensagem ao entregador',
+          ),
         ),
       ],
     );

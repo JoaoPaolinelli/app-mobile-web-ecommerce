@@ -4,6 +4,7 @@ import 'package:app_ecommerce/presentation/controllers/home_controller.dart';
 import 'package:app_ecommerce/presentation/controllers/navigation_controller.dart';
 import 'package:app_ecommerce/presentation/controllers/notification_controller.dart';
 import 'package:app_ecommerce/presentation/controllers/order_controller.dart';
+import 'package:app_ecommerce/presentation/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'core/theme/app_theme.dart';
@@ -17,7 +18,8 @@ void main() {
   Get.put(NotificationController(), permanent: true);
   Get.put(OrderController());
   Get.put(CartController(), permanent: true);
-
+  Get.put(UserController(), permanent: true);
+  Get.put(OrderController(), permanent: true);
   runApp(const MyApp());
 }
 

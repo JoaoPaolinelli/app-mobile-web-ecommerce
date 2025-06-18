@@ -93,11 +93,11 @@ class SearchPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: SectionHeader(
-                    title: 'Dia dos namorados no E-Buy',
+                    title: 'Produtos Importados',
                     onTap: () {
                       Get.to(
                         () => GenericListingPage<ProductModel>(
-                          title: 'Dia dos namorados no E-Buy',
+                          title: 'Produtos Importados',
                           items: hc.mostOrdered,
                           itemBuilder: (p) => ProductCard(product: p),
                         ),
@@ -121,7 +121,7 @@ class SearchPage extends StatelessWidget {
                       Get.to(
                         () => GenericListingPage<ProductModel>(
                           title: 'Produtos com Desconto',
-                          items: hc.mostOrdered,
+                          items: hc.discounted,
                           itemBuilder: (p) => ProductCard(product: p),
                         ),
                       );

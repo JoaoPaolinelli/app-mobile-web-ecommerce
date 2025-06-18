@@ -53,6 +53,15 @@ export class ProductsController {
     return all;
   }
 
+   @Get('discounted')
+  async findDiscounted(): Promise<ProductDto[]> {
+    const [br, eu] = await Promise.all([
+      this.brazilian.findAll(),
+      this.european.findAll(),
+    ]);
+    return [...br, ...eu].filter(p => p.hasDiscount && p.discountValue > 0);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ProductDto> {
     try {
@@ -79,5 +88,7 @@ export class ProductsController {
 
     return [...brFilt, ...euFilt];
   }
+
+  
 
 }
