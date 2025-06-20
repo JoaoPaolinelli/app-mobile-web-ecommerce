@@ -1,4 +1,4 @@
-# 📦 API Devnology – Resolução Teste Desenvolvedor(a) Júnior/Pleno
+# 📦 API Devnology – Resolução Teste Desenvolvedor(a) Júnior
 
 > **Objetivo:**
 > Construir uma solução full-stack de e-commerce, com front-end Web (React), Mobile (Flutter) e back-end opcional em Node.js/NestJS, integrando produtos de dois fornecedores, gerenciando carrinho e registro de pedidos.
