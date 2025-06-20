@@ -1,12 +1,12 @@
 # 🚀 Devnology Full-Stack E-Commerce
 
-> **Resolução Teste Desenvolvedor(a) Júnior/Pleno**
+> **Resolução Teste Desenvolvedor(a) Júnior**
 
 Este repositório contém a solução completa de um e-commerce full-stack, abrangendo:
 
 - **Front-end Web**: SPA em React + Material-UI  
-- **App Mobile**: Flutter nativo  
-- **(Opcional) Back-end**: API unificada em Node.js/NestJS  
+- **App Mobile**: Flutter nativo [Melhor desenvolvimento] 
+- **(FEITO-Opcional) Back-end**: API unificada em Node.js/NestJS  
 
 ---
 
@@ -24,8 +24,6 @@ Este repositório contém a solução completa de um e-commerce full-stack, abra
 - Endpoint único de produtos via **NestJS**  
 - Cache de chamadas HTTP  
 - Documentação **Swagger**  
-- Autenticação **JWT**  
-- Containerização **Docker**  
 - CI/CD (GitHub Actions)  
 - Testes unitários e E2E  
 </details>
@@ -47,15 +45,12 @@ Este repositório contém a solução completa de um e-commerce full-stack, abra
 
 ### 1. Front-end Web (React)
 
-```bash
 cd frontend-react
 npm install
 npm start
 # Acesse http://localhost:3000
 2. App Mobile (Flutter)
-bash
-Copiar
-Editar
+
 cd mobile-flutter
 flutter pub get
 flutter run
@@ -69,14 +64,7 @@ cp .env.example .env        # Preencha endpoints e MONGODB_URI
 npm install
 npm run start:dev
 # Swagger em http://localhost:3000/api-docs
-4. (Opcional) Docker
-bash
-Copiar
-Editar
-docker-compose up --build
-# Or individually:
-docker build -t api-devnology api-devnology/
-docker run -p 3000:3000 api-devnology
+
 📐 Arquitetura & Boas Práticas
 Modularidade: separação clara entre domínios (produtos, pedidos, UI, serviços)
 
@@ -95,9 +83,7 @@ Lint & Format: ESLint + Prettier e analysis_options.yaml (Flutter)
 Documentação Viva: Swagger UI para API; README claros para web e mobile
 
 📂 Estrutura Geral
-bash
-Copiar
-Editar
+
 /frontend-react      # SPA React + MUI
 /mobile-flutter      # App Flutter nativo
 /api-devnology       # API NestJS (opcional)
