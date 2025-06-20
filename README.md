@@ -1,124 +1,104 @@
-# Front-end Web (React)
+# 🚀 Devnology Full-Stack E-Commerce
 
-> **Objetivo**
-> Consumir a API unificada de produtos, permitindo busca, filtro, carrinho e checkout em uma SPA React com experiência fluida e componentes Material-UI.
+> **Resolução Teste Desenvolvedor(a) Júnior/Pleno**
 
----
+Este repositório contém a solução completa de um e-commerce full-stack, abrangendo:
 
-## 🔗 Links Úteis
-
-* **Repositório:** [https://github.com/seu-usuario/frontend-react](https://github.com/seu-usuario/frontend-react)
-* **Demo local:** [http://localhost:3000](http://localhost:3000) (após `npm start`)
+- **Front-end Web**: SPA em React + Material-UI  
+- **App Mobile**: Flutter nativo  
+- **(Opcional) Back-end**: API unificada em Node.js/NestJS  
 
 ---
 
-## 📂 Estrutura de Pastas
+## 📋 Requisitos Obrigatórios
 
-```
-/src
-├── assets/            # Imagens, fontes e ícones estáticos
-├── components/        # Componentes genéricos e reutilizáveis
-│   ├── ProductCard/   # Card de produto (imagem, nome, preço, botão)
-│   ├── Navbar/        # Barra de navegação principal
-│   ├── Carousel/      # Carrossel de categorias
-│   └── …
-├── pages/             # Páginas mapeadas em rotas
-│   ├── HomePage/      # Lista de categorias + carrossel
-│   ├── CategoryPage/  # Produtos filtrados por categoria
-│   ├── CartPage/      # Visão do carrinho e resumo
-│   ├── CheckoutPage/  # Formulário de checkout
-│   └── ProfilePage/   # Dados do usuário (opcional)
-├── services/          # Instâncias Axios e chamadas a APIs
-│   └── api.js         # Configura baseURL e interceptors
-├── store/             # Context API / Zustand
-│   └── cartContext.js # Estado global do carrinho
-├── routes/            # Configuração de React Router
-│   └── AppRoutes.js
-├── styles/            # Tema MUI e estilos globais
-│   └── theme.js
-└── index.js           # Entrypoint, BrowserRouter e ThemeProvider
-```
+1. **Listagem de produtos** de dois fornecedores externos  
+2. **Busca e filtro** de produtos  
+3. **Carrinho de compras** (adicionar, remover, ajustar quantidade)  
+4. **Checkout** com formulário de cliente  
+5. **Registro de pedidos** em persistência (MongoDB ou similar)  
+
+<details>
+<summary>🎯 Requisitos Opcionais / Diferenciais</summary>
+
+- Endpoint único de produtos via **NestJS**  
+- Cache de chamadas HTTP  
+- Documentação **Swagger**  
+- Autenticação **JWT**  
+- Containerização **Docker**  
+- CI/CD (GitHub Actions)  
+- Testes unitários e E2E  
+</details>
 
 ---
 
-## ⚙️ Dependências Principais
+## 🔧 Tecnologias
+
+| Camada      | Stack / Bibliotecas                                  |
+|-------------|------------------------------------------------------|
+| **Web**     | React, React Router, Axios, Material-UI, FontAwesome |
+| **Mobile**  | Flutter, GetX, Provider, Shared_Preferences, HTTP    |
+| **Backend** | NestJS, TypeScript, Mongoose, Axios, Cache-Manager   |
+| **DevOps**  | Docker, GitHub Actions, ESLint, Prettier             |
+
+---
+
+## ⚙️ Como Rodar
+
+### 1. Front-end Web (React)
 
 ```bash
-npm install react react-dom react-router-dom axios \
-  @mui/material @mui/icons-material \
-  @emotion/react @emotion/styled \
-  @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
-```
+cd frontend-react
+npm install
+npm start
+# Acesse http://localhost:3000
+2. App Mobile (Flutter)
+bash
+Copiar
+Editar
+cd mobile-flutter
+flutter pub get
+flutter run
+# Emulador ou dispositivo conectado
+3. API (NestJS)
+bash
+Copiar
+Editar
+cd api-devnology
+cp .env.example .env        # Preencha endpoints e MONGODB_URI
+npm install
+npm run start:dev
+# Swagger em http://localhost:3000/api-docs
+4. (Opcional) Docker
+bash
+Copiar
+Editar
+docker-compose up --build
+# Or individually:
+docker build -t api-devnology api-devnology/
+docker run -p 3000:3000 api-devnology
+📐 Arquitetura & Boas Práticas
+Modularidade: separação clara entre domínios (produtos, pedidos, UI, serviços)
 
-* **react-router-dom**: roteamento SPA
-* **axios**: cliente HTTP
-* **@mui/material + @mui/icons-material**: componentes UI e ícones
-* **@emotion/react + @emotion/styled**: CSS-in-JS para MUI
-* **@fortawesome/react-fontawesome**: biblioteca de ícones
+DI & Controllers: NestJS e GetX para injeção de dependências e organização
 
----
+DTOs + Validation: entrada validada via class-validator (backend) e Form (Flutter)
 
-## 🏗️ Setup & Como Rodar
+Cache & Performance: interceptors e cache-manager para produtos
 
-1. **Clone o repositório**
+Theming: MUI Theme (web) e ThemeData (Flutter) com constantes de estilo
 
-   ```bash
-   git clone https://github.com/seu-usuario/frontend-react.git
-   cd frontend-react
-   ```
+State Management: Context API / Zustand (web) e GetX + Provider (mobile)
 
-2. **Instale as dependências**
+Lint & Format: ESLint + Prettier e analysis_options.yaml (Flutter)
 
-   ```bash
-   npm install
-   ```
+Documentação Viva: Swagger UI para API; README claros para web e mobile
 
-3. **Inicie em modo de desenvolvimento**
-
-   ```bash
-   npm start
-   ```
-
-   Abre automaticamente em [http://localhost:3000](http://localhost:3000)
-
-4. **Build para produção**
-
-   ```bash
-   npm run build
-   ```
-
----
-
-## 🏛️ Arquitetura & Padrões de Projeto
-
-* **Component-Driven**
-  UI dividida em componentes atômicos e compostos.
-* **Gerenciamento de Estado**
-  Context API (ou Zustand) para o carrinho: adicionar, remover, atualizar quantidades.
-* **Axios Interceptors**
-
-  * Injeta token (para futura autenticação JWT)
-  * Tratamento global de erros (exibe Snackbar)
-* **React Router v6**
-  Rotas nomeadas e lazy loading de páginas.
-* **MUI Theme Centralizado**
-  Configuração de cores, tipografia e espaçamentos em `styles/theme.js`.
-* **Hooks Customizados**
-
-  * `useProducts` — lógica de obtenção de produtos.
-  * `useCart` — lógica de carrinho e total.
-* **Error Boundary**
-  Captura erros de UI e exibe componente de fallback.
-* **Lint & Formatação**
-  Husky + lint-staged com ESLint & Prettier — qualidade de código garantida antes de cada commit.
-
----
-
-## 💡 Decisões Técnicas & Boas Práticas
-
-* **MUI**: Consistência visual e acessibilidade (ARIA, foco, responsividade).
-* **Camada Única de API**: `services/api.js` facilita troca de baseURL e políticas CORS.
-* **State Management Leve**: Evita over-engineering utilizando Context + Reducer.
-* **Lazy Loading**: Otimiza bundle inicial e melhora performance.
-* **Tipagem**: PropTypes ou migração opcional para TypeScript em componentes.
-* **CSS-in-JS**: Estilos dinâmicos e baseados em tema via Emotion.
+📂 Estrutura Geral
+bash
+Copiar
+Editar
+/frontend-react      # SPA React + MUI
+/mobile-flutter      # App Flutter nativo
+/api-devnology       # API NestJS (opcional)
+/README.md           # Documentação geral (este arquivo)
