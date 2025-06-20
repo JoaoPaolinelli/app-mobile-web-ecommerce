@@ -3,9 +3,11 @@
 > **Objetivo:**
 > Consumir a API unificada de produtos, permitindo busca, filtro, carrinho e checkout em um app nativo Flutter.
 
+---
 
 ### 🗂 Estrutura de Pastas
 
+```text
 /lib
 ├── core/
 │   ├── constants/
@@ -42,9 +44,11 @@
 │       └── phone_input_field.dart
 │
 └── main.dart                      # App entrypoint & ThemeData
+```
 
 ### 📦 Dependências (pubspec.yaml)
 
+```yaml
 dependencies:
   flutter:
     sdk: flutter
@@ -55,21 +59,28 @@ dependencies:
   intl_phone_field: ^3.0.1
   mask_text_input_formatter: ^2.3.0
   http: ^0.13.5           # ou dio: ^5.1.1
+```
 
 ### ⚙️ Setup & Como Rodar
 
 **Clone o repositório**
 
+```bash
 git clone https://github.com/seu-usuario/mobile-flutter.git
 cd mobile-flutter
+```
 
 **Instale as dependências**
 
+```bash
 flutter pub get
+```
 
 **Execute o app**
 
+```bash
 flutter run
+```
 
 Conecte um dispositivo físico ou emulador.
 
