@@ -4,14 +4,6 @@
 > Consumir a API unificada de produtos, permitindo busca, filtro, carrinho e checkout em uma SPA React com experiência fluida e componentes Material-UI.
 
 ---
-
-## 🔗 Links Úteis
-
-* **Repositório:** [https://github.com/seu-usuario/frontend-react](https://github.com/seu-usuario/frontend-react)
-* **Demo local:** [http://localhost:3000](http://localhost:3000) (após `npm start`)
-
----
-
 ## 📂 Estrutura de Pastas
 
 ```
@@ -60,28 +52,22 @@ npm install react react-dom react-router-dom axios \
 
 ## 🏗️ Setup & Como Rodar
 
-1. **Clone o repositório**
 
-   ```bash
-   git clone https://github.com/seu-usuario/frontend-react.git
-   cd frontend-react
-   ```
-
-2. **Instale as dependências**
+1. **Instale as dependências**
 
    ```bash
    npm install
    ```
 
-3. **Inicie em modo de desenvolvimento**
+2. **Inicie em modo de desenvolvimento**
 
    ```bash
    npm start
    ```
 
-   Abre automaticamente em [http://localhost:3000](http://localhost:3000)
+   Abre automaticamente em [http://localhost:5173](http://localhost:3000)
 
-4. **Build para produção**
+3. **Build para produção**
 
    ```bash
    npm run build
