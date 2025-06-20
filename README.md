@@ -48,7 +48,7 @@ Este repositório contém a solução completa de um e-commerce full-stack, abra
 cd frontend-react
 npm install
 npm start
-# Acesse http://localhost:3000
+# Acesse http://localhost:5173/
 2. App Mobile (Flutter)
 
 cd mobile-flutter
