@@ -1,98 +1,176 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 📦 API Devnology – Resolução Teste Desenvolvedor(a) Júnior/Pleno
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> **Objetivo:**
+> Construir uma solução full-stack de e-commerce, com front-end Web (React), Mobile (Flutter) e back-end opcional em Node.js/NestJS, integrando produtos de dois fornecedores, gerenciando carrinho e registro de pedidos.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 📑 Sumário
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. [Visão Geral](#visão-geral)
+2. [Requisitos de Projeto](#requisitos-de-projeto)
+3. [Tecnologias e Dependências](#tecnologias-e-dependências)
+4. [Arquitetura & Padrões de Projeto](#arquitetura--padrões-de-projeto)
+5. [Setup & Como Rodar](#setup--como-rodar)
+6. [Endpoints Principais](#endpoints-principais)
+7. [Decisões Técnicas e Boas Práticas](#decisões-técnicas-e-boas-práticas)
+8. [Testes](#testes)
+9. [Docker](#docker)
+10. [Swagger / API Docs](#swagger--api-docs)
+11. [Próximos Passos / Diferenciais](#próximos-passos--diferenciais)
 
-## Project setup
+---
 
-```bash
-$ npm install
-```
+## 🌐 Visão Geral
 
-## Compile and run the project
+* Integra produtos de dois fornecedores via APIs externas.
+* Permite busca, filtro, carrinho de compras e checkout.
+* Registra pedidos em MongoDB.
+* (Opcional) Back-end em NestJS com cache e documentação Swagger.
 
-```bash
-# development
-$ npm run start
+---
 
-# watch mode
-$ npm run start:dev
+## ✅ Requisitos de Projeto
 
-# production mode
-$ npm run start:prod
-```
+**Obrigatórios**
 
-## Run tests
+* Listagem de produtos de dois fornecedores
+* Busca e filtro
+* Carrinho (adicionar/remover)
+* Checkout com formulário do cliente
+* Registro de compras (persistência)
 
-```bash
-# unit tests
-$ npm run test
+**Diferenciais (opcionais)**
 
-# e2e tests
-$ npm run test:e2e
+* Back-end unificado em NestJS
 
-# test coverage
-$ npm run test:cov
-```
+  * Endpoint único de produtos
+  * Registro de compras via API
+  * Autenticação JWT (futuro)
+  * Docs Swagger
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🛠️ Tecnologias e Dependências
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+* **NestJS** (modular, DI)
+* **TypeScript**
+* **Mongoose** (ODM MongoDB)
+* **@nestjs/axios** + **cache-manager** (HTTP + cache)
+* **@nestjs/config** (env vars)
+* **class-validator** + **class-transformer** (DTOs)
+* **Jest & Supertest** (testes)
+* **ESLint & Prettier** (lint/format)
+* **Swagger** (@nestjs/swagger)
+* **Docker** (containerização)
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+<details>
+<summary>📦 Principais pacotes (package.json)</summary>
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+"dependencies": {
+  "@nestjs/common": "^10.x",
+  "@nestjs/core": "^10.x",
+  "@nestjs/axios": "^4.x",
+  "@nestjs/cache-manager": "^3.x",
+  "@nestjs/config": "^3.x",
+  "@nestjs/mongoose": "^10.x",
+  "@nestjs/swagger": "^6.x",
+  "mongoose": "^7.x",
+  "cache-manager": "^5.x",
+  "class-validator": "^0.14.x",
+  "class-transformer": "^0.5.x"
+},
+"devDependencies": {
+  "jest": "^29.x",
+  "ts-jest": "^29.x",
+  "eslint": "^9.x",
+  "prettier": "^3.x",
+  "supertest": "^7.x",
+  "ts-node": "^10.x"
+}
 
-## Resources
+</details>
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🏛️ Arquitetura & Padrões de Projeto
 
-## Support
+* Modular: módulos por domínio (products, orders, etc.)
+* Controller → Service → DTO/Schema
+* Dependency Injection nativo NestJS
+* DTOs + ValidationPipe global (whitelist, forbidNonWhitelisted)
+* Mongoose Schemas para pedidos
+* CacheInterceptor para chamadas de produtos
+* @nestjs/config para variáveis de ambiente
+* Swagger configurado em main.ts
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## ⚙️ Setup & Como Rodar
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+1. Clone o repositório:
 
-## License
+   git clone https://github.com/seu-usuario/api-devnology.git
+   cd api-devnology
+2. Crie o arquivo .env na raiz com as variáveis:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+   BRAZILIAN_PROVIDER_URL=https://api.fornecedor-brasil.com/produtos
+   EUROPEAN_PROVIDER_URL=https://api.fornecedor-europa.com/products
+   MONGODB_URI=mongodb://localhost:27017/devnology
+   PORT=3000
+
+3. Instale as dependências:
+ 
+   npm install
+   
+5. Para desenvolvimento:
+
+   npm run start:dev
+   
+7. Para produção:
+
+   npm run build
+   npm run start:prod
+
+---
+
+## 🚀 Endpoints Principais
+
+| Método | Rota                | Descrição                   |
+| ------ | ------------------- | --------------------------- |
+| GET    | `/products`         | Lista unificada de produtos |
+| GET    | `/products?search=` | Busca / filtro de produtos  |
+| POST   | `/orders`           | Cria um pedido              |
+| GET    | `/orders/:id`       | Consulta pedido por ID      |
+| GET    | `/api-docs`         | Interface Swagger           |
+
+---
+
+## 💡 Decisões Técnicas e Boas Práticas
+
+* NestJS modular + DI para escalabilidade
+* DTOs + ValidationPipe garantem segurança e integridade
+* CacheInterceptor reduz latência externa
+* Config Service desacopla ambiente do código
+* Mongoose com schemas tipados
+* Testes unitários & E2E
+* ESLint & Prettier para código consistente
+* Swagger para documentação viva
+
+---
+
+## 🔍 Testes
+
+npm run test      # unitários
+npm run test:cov  # cobertura
+npm run test:e2e  # integração
+
+
+
+## 📖 Swagger / API Docs
+
+Acesse após subir a API em:
+
+http://localhost:3000/api-docs
+
+
